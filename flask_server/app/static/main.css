@@ -33,8 +33,32 @@
     font-size: 16px;
   }
 
-  .author-name-side{
-      font-size: 20px;
-      padding-top: 20px;
-      padding-bottom: 40px;
-  }
+
+
+.author-metadata{
+    background-color: #3CAEA3;
+    text-align: center;
+    height: 100%;
+}
+
+
+.author-info h1 {
+    padding: 50px;
+}
+
+
+
+.author-metadata p{
+    color: black;
+}
+
+.author-name-side{
+    font-size: 20px;
+    padding-top: 20px;
+    padding-bottom: 40px;
+    margin-top: 100px;
+}
+
+.links-auth{
+    margin-top: 100px;
+}
