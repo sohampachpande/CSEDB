@@ -1,11 +1,29 @@
 <html>
     <head>
         <title>CSEDB</title>
+        <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <link rel= "stylesheet" href= "{{ url_for('static',filename='main.css') }}">
     </head>
     <body>
-        <h1>Author individual page</h1>
-        {% for detail in author %} 
-        <p>{{ detail }}</p> 
-        {% endfor %}
+        <section style="padding-top:30px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 author-metadata">
+                        <p class="author-name-side">Author name: Sahit</p>
+                        <p>About</p>
+                        <p>papers</p>
+                        <p>Co-authors</p>
+                        <p>Conferences</p>
+                    </div>
+                    <div class="col-lg-9">
+                        {% for detail in author %} 
+                        <p>{{ detail }}</p> 
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
     </body>
 </html>

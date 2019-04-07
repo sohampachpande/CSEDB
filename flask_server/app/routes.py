@@ -91,8 +91,11 @@ def get_author_page(author_id):
     l = cursor.fetchall()
     # Fetch a single row using fetchone()
     # data = cursor.fetchone()
+    papers = [['paper1', 'paperid'], ['paper2', 'paperid2']]
+    confs = [['conf1', 'confid'], ['conf2', 'confid2']]
+
     print(l)
-    return render_template('author_temp.html', author=l[0])
+    return render_template('author_temp.html', author=l[0], papers=papers, confs=confs)
 
 
 
