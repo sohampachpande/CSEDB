@@ -94,8 +94,8 @@ def get_author_page(author_id):
     papers = [['paper1', 'paperid'], ['paper2', 'paperid2']]
     confs = [['conf1', 'confid'], ['conf2', 'confid2']]
     # x =  ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
-    y = [1,3,6,8,9,0]
-    x =  [1,2,3.5,4,5,6]
+    y = [ 1, 3, 6,8 , 9, 0]
+    x =  [1 , 2 , 3.5 , 4 , 5 , 6]
     print(l)
     return render_template('author_temp.html', author=l[0], papers=papers, confs=confs, x=x, y=y)
 

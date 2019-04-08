@@ -1,5 +1,6 @@
 .search-sec{
-    background: #1A4668;padding: 2rem;
+    margin-top:50px;
+    padding: 30px;
 }
 .search-slt{
     display: block;
@@ -11,7 +12,7 @@
     background-image: none;
     border: 1px solid #ccc;
     height: calc(3rem + 2px) !important;
-    border-radius:0;
+    border-radius: 5px;
 }
 .wrn-btn{
     width: 100%;
@@ -22,8 +23,7 @@
      border-radius:0;
 }
 
-.button {
-    background-color: #4CAF50; /* Green */
+.button { /* Green */
     border: none;
     color: white;
     padding: 15px 32px;
@@ -31,6 +31,8 @@
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
+    width: 100%;
+    height: calc(3rem + 2px) !important;
   }
 
 
@@ -40,6 +42,7 @@
     text-align: center;
     height: 100%;
 }
+
 
 
 .author-info h1 {
@@ -62,3 +65,4 @@
 .links-auth{
     margin-top: 100px;
 }
+
