@@ -6,7 +6,7 @@ import pymysql.cursors
 
 # Connect to the database
 
-db = PyMySQL.connect("localhost","root","@Cooker123","test" )
+db = PyMySQL.connect("10.0.25.35","sohamp","s27498","test" )
 
 @app.route('/')
 @app.route('/index')

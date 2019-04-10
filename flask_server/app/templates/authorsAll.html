@@ -1,9 +1,14 @@
 <html>
-    <head>
-        <title>CSEDB</title>
-    </head>
+        {% include 'head.html' %}
+
+
     <body>
+        
+
+        {% include 'navbar.html' %}
+
         <h1>All Authors page</h1>
+
         {% for author in authors %} 
             <p>{{ author }}</p>
             <a href="/author/{{ author[1] }}">click here for author page</a>
