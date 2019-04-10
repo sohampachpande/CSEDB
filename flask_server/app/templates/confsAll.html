@@ -1,8 +1,10 @@
 <html>
-    <head>
-        <title>CSEDB</title>
-    </head>
+	{% include 'head.html' %}
+	
     <body>
+
+        {% include 'navbar.html' %}
+
         {% for page in pages %} 
         <p>{{ page }}</p> 
         {% endfor %}

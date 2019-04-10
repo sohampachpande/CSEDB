@@ -51,7 +51,7 @@ def get_all_authors():
     cursor = db.cursor()
     # execute SQL query using execute() method.
     cursor.execute('SELECT * FROM authors ')
-    l = cursor.fetchall()
+    l = []#cursor.fetchall()
     # Fetch a single row using fetchone()
     # data = cursor.fetchone()
     print(l)
