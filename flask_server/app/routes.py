@@ -58,6 +58,18 @@ def get_all_authors():
     return render_template('authorsAll.html', authors = l)
 
 
+@app.route('/author_all/<a_letter>', methods = ['GET'])
+def get_author_by_startingLetter(a_letter):
+    cursor = db.cursor()
+    # execute SQL query using execute() method.
+    cursor.execute('SELECT * FROM authors ')
+    l = cursor.fetchall()
+    # Fetch a single row using fetchone()
+    # data = cursor.fetchone()
+    print(l)
+    return render_template('authorsAll.html', authors = l)
+
+
 @app.route('/papers_all', methods = ['GET'])
 def get_all_papers():
     cursor = db.cursor()

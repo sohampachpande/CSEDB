@@ -12,10 +12,12 @@
                     <div class="col-lg-2 author-letters">
                     	<h4 style="margin-top: 50px">All Authors Initials</h4>
                         <div class="letters">
-                            <p>a</p>
+                            <!-- <p>a</p>
                             <p>b</p>
                             <p>c</p>
-                            <p>d</p>
+                            <p>d</p> -->
+                            <a href="/author_all/a">a</a><br>
+                            <a href="/author_all/b">b</a>
                         </div>
                     </div>
                     <div class="col-lg-10 author-info">
@@ -23,8 +25,15 @@
         				<hr>
 
                         {% for author in authors %} 
-				            <p>{{ author }}</p>
-				            <a href="/author/{{ author[1] }}">click here for author page</a>
+                        <div class="card bg-light text-dark" style="margin-top:10px;">
+                            <div class="info" style="padding: 20px;">
+                                {% set d = ['Name', 'Author ID', 'Paper'] %}
+                                {% for i in range(3) %}
+                                <p>{{ d[i] }} :- {{ author[i] }}</p>
+                                {% endfor %}
+                                <a href="/author/{{ author[1] }}">click here for author page</a>
+                            </div>
+                        </div>    
 				        {% endfor %}
                     </div>
                 </div>
