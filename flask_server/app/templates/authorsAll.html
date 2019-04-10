@@ -7,7 +7,7 @@
         <section>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-2 author-letters">
+                    <div class="col-lg-2 author-letters card sticky-top" >
                     	<h4 style="margin-top: 50px">All Authors Initials</h4>
                         <div class="letters">
                             <!-- <p>a</p>
@@ -25,11 +25,11 @@
                         {% for author in authors %} 
                         <div class="card bg-light text-dark" style="margin-top:10px;">
                             <div class="info" style="padding: 20px;">
-                                {% set d = ['Name', 'Author ID', 'Paper'] %}
-                                {% for i in range(3) %}
+                                {% set d = ['Author ID','Name',] %}
+                                {% for i in range(2) %}
                                 <p>{{ d[i] }} :- {{ author[i] }}</p>
                                 {% endfor %}
-                                <a href="/author/{{ author[1] }}">click here for author page</a>
+                                <a href="/author/{{ author[0] }}">click here for author page</a>
                             </div>
                         </div>    
 				        {% endfor %}

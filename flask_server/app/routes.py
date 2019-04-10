@@ -1,12 +1,14 @@
 from flask import render_template, request, redirect
 from app import app
 import pymysql as PyMySQL
-
 import pymysql.cursors
 
-# Connect to the database
+def FirstNameLastName(name):
+    l_n = name.split(",")
+    return l_n[-1]+', '+ l_n[0]
 
-db = PyMySQL.connect("10.0.25.35","sohamp","s27498","test" )
+# Connect to the database
+db = PyMySQL.connect("10.0.25.35","sohamp","s27498","CSResearchPapers" )
 
 @app.route('/')
 @app.route('/index')
@@ -26,35 +28,28 @@ def index():
     return render_template('index.html', title='CSE DB', user=user)
 
 
-
-
-@app.route('/form/', methods = ['POST'])
-def form():
-    name = request.form['Author']
-    year = request.form['Year']
-    s = "The name is: " + name + "\nYear is " + year
-    # prepare a cursor object using cursor() method
-    cursor = db.cursor()
-    # execute SQL query using execute() method.
-    cursor.execute('SELECT * FROM test_table ')
-    l = cursor.fetchall()
-
-    # Fetch a single row using fetchone()
-    # data = cursor.fetchone()
-    print(l)
-    # disconnect from server
-    return s
+# @app.route('/form/', methods = ['POST'])
+# def form():
+#     name = request.form['Author']
+#     year = request.form['Year']
+#     s = "The name is: " + name + "\nYear is " + year
+#     # prepare a cursor object using cursor() method
+#     cursor = db.cursor()
+#     # execute SQL query using execute() method.
+#     cursor.execute('SELECT * FROM test_table ')
+    
+#     l = []
+#     return s
 
 
 @app.route('/author_all', methods = ['GET'])
 def get_all_authors():
     cursor = db.cursor()
     # execute SQL query using execute() method.
-    cursor.execute('SELECT * FROM authors ')
-    l = []#cursor.fetchall()
-    # Fetch a single row using fetchone()
-    # data = cursor.fetchone()
-    print(l)
+    cursor.execute('SELECT * FROM AuthorTable ')
+    l = cursor.fetchall()
+
+
     return render_template('authorsAll.html', authors = l)
 
 
@@ -76,6 +71,10 @@ def get_all_papers():
     # execute SQL query using execute() method.
     cursor.execute('SELECT * FROM test_table ')
     l = cursor.fetchall()
+
+    # for a in l:
+    #     a[1] = FirstNameLastName(a[1])
+
     # Fetch a single row using fetchone()
     # data = cursor.fetchone()
     print(l)
@@ -94,16 +93,16 @@ def get_all_confs():
     return render_template('confsAll.html', pages = l)
 
 
-@app.route('/author/<int:author_id>', methods = ['GET'])
+@app.route('/author/<author_id>', methods = ['GET'])
 def get_author_page(author_id):
     #must return author individual page
     cursor = db.cursor()
     # execute SQL query using execute() method.
-    cursor.execute('SELECT * FROM authors WHERE  aid = "{}"'.format(author_id))
+    cursor.execute('SELECT * FROM AuthorTable WHERE  AuthorID = "{}"'.format(author_id))
     l = cursor.fetchall()
     # Fetch a single row using fetchone()
     # data = cursor.fetchone()
-    papers = [['paper1', 'paperid'], ['paper2', 'paperid2']]
+    papers = l
     confs = [['conf1', 'confid'], ['conf2', 'confid2']]
     # x =  ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
     y = [ 1, 3, 6,8 , 9, 0]
@@ -131,3 +130,20 @@ def search():
     print(s)
     # disconnect from server
     return s
+
+@app.route('/author/<author_id>/papers', methods = ['GET'])
+def get_author_papers_page(author_id):
+    #must return author individual page
+    cursor = db.cursor()
+    # execute SQL query using execute() method.
+    cursor.execute('select AuthorWritesPaper.PaperID from AuthorWritesPaper where AuthorWritesPaper.AuthorID = "{}"'.format(author_id))
+    l = cursor.fetchall()
+    # Fetch a single row using fetchone()
+    # data = cursor.fetchone()
+    papers = l
+    confs = [['conf1', 'confid'], ['conf2', 'confid2']]
+    # x =  ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
+    y = [ 1, 3, 6,8 , 9, 0]
+    x =  [1 , 2 , 3.5 , 4 , 5 , 6]
+    print(l)
+    return render_template('author_temp.html', author=l[0], papers=papers, confs=confs, x=x, y=y)
