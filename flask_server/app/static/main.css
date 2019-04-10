@@ -43,13 +43,15 @@
     height: 100%;
 }
 
-
+.author-letters{
+    background-color: #3CAEA3;
+    text-align: center;
+    height: 100%;
+}
 
 .author-info h1 {
     padding: 50px;
 }
-
-
 
 .author-metadata p{
     color: black;
@@ -66,3 +68,6 @@
     margin-top: 100px;
 }
 
+.letters{
+    margin-top: 50px;
+}
