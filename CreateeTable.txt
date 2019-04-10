@@ -1,40 +1,47 @@
+## Create Database
+
+CREATE DATABASE CSResearchPapers;
+
+USE CSResearchPapers;
+
+
 ## Tables
 
 DROP TABLE IF EXISTS AuthorTable;
 CREATE TABLE AuthorTable (
-  AuthorID VARCHAR(15) NOT NULL,
-  AuthorName VARCHAR(100) NOT NULL,
+  AuthorID VARCHAR(20) NOT NULL,
+  AuthorName VARCHAR(500) NOT NULL,
   CONSTRAINT pk_AuthorTable PRIMARY KEY(AuthorID)
 );
 
 DROP TABLE IF EXISTS AffiliationTable;
-CREATE TABLE Affiliation (
-  AffiliationID VARCHAR(15) NOT NULL,
-  Affiliation VARCHAR(200) NOT NULL
-  Place VARCHAR(200) NOT NULL
+CREATE TABLE AffiliationTable (
+  AffiliationID VARCHAR(20) NOT NULL,
+  Affiliation VARCHAR(500) NOT NULL,
+  Place VARCHAR(200) NOT NULL,
   CONSTRAINT pk_AffiliationTable PRIMARY KEY(AffiliationID)
 );
 
 
 DROP TABLE IF EXISTS PaperTable;
 CREATE TABLE PaperTable (
-  PaperID VARCHAR(15) NOT NULL,
-  PaperName VARCHAR(200) NOT NULL,
+  PaperID VARCHAR(20) NOT NULL,
+  PaperName VARCHAR(500) NOT NULL,
   CONSTRAINT pk_PaperTable PRIMARY KEY(PaperID)
 ); 
 
 DROP TABLE IF EXISTS ConferenceTable;
 CREATE TABLE ConferenceTable (
-  ConferenceID VARCHAR(15) NOT NULL,
-  ConferenceName VARCHAR(200) NOT NULL,
+  ConferenceID VARCHAR(20) NOT NULL,
+  ConferenceName VARCHAR(500) NOT NULL,
   ConferenceYear INTEGER NOT NULL,
   CONSTRAINT pk_ConferenceTable PRIMARY KEY(ConferenceID)
 ); 
 
 DROP TABLE IF EXISTS FieldOfStudy;
 CREATE TABLE FieldOfStudy (
-  FieldID VARCHAR(15) NOT NULL,
-  FieldName VARCHAR(100) NOT NULL,
+  FieldID VARCHAR(20) NOT NULL,
+  FieldName VARCHAR(500) NOT NULL,
   CONSTRAINT pk_FieldOfStudy PRIMARY KEY(FieldID)
 );
 
@@ -43,8 +50,8 @@ CREATE TABLE FieldOfStudy (
 
 DROP TABLE IF EXISTS KeywordsInPaper;
 CREATE TABLE KeywordsInPaper (
-  PaperID VARCHAR(15) NOT NULL,
-  Keyword VARCHAR(100) NOT NULL,
+  PaperID VARCHAR(20) NOT NULL,
+  Keyword VARCHAR(500) NOT NULL,
   CONSTRAINT fk_KeywordsInPaper_PaperTable_PaperID FOREIGN KEY(PaperID) REFERENCES PaperTable(PaperID)
 );
 
@@ -53,8 +60,8 @@ CREATE TABLE KeywordsInPaper (
 
 DROP TABLE IF EXISTS AuthorWritesPaper;
 CREATE TABLE AuthorWritesPaper (
-  AuthorID VARCHAR(15) NOT NULL,
-  PaperID VARCHAR(15) NOT NULL,
+  AuthorID VARCHAR(20) NOT NULL,
+  PaperID VARCHAR(20) NOT NULL,
   CONSTRAINT fk_AuthorWritesPaper_AuthorTable_AuthorID FOREIGN KEY(AuthorID) REFERENCES AuthorTable(AuthorID),
   CONSTRAINT fk_AuthorWritesPaper_PaperTable_PaperID FOREIGN KEY(PaperID) REFERENCES PaperTable(PaperID),
   PRIMARY KEY(AuthorID, PaperID)
@@ -63,8 +70,8 @@ CREATE TABLE AuthorWritesPaper (
 
 DROP TABLE IF EXISTS PaperPublishedInConference;
 CREATE TABLE PaperPublishedInConference (
-  PaperID VARCHAR(15) NOT NULL,
-  ConferenceID VARCHAR(15) NOT NULL,
+  PaperID VARCHAR(20) NOT NULL,
+  ConferenceID VARCHAR(20) NOT NULL,
   CONSTRAINT fk_PaperPublishedInConference_ConferenceTable_ConferenceID FOREIGN KEY(ConferenceID) REFERENCES ConferenceTable(ConferenceID),
   CONSTRAINT fk_PaperPublishedInConference_PaperTable_PaperID FOREIGN KEY(PaperID) REFERENCES PaperTable(PaperID),
   PRIMARY KEY(ConferenceID, PaperID)
@@ -72,17 +79,17 @@ CREATE TABLE PaperPublishedInConference (
 
 DROP TABLE IF EXISTS Paper1CitesPaper2;
 CREATE TABLE Paper1CitesPaper2 (
-  Paper1ID VARCHAR(15) NOT NULL,
-  Paper2ID VARCHAR(15) NOT NULL,
-  CONSTRAINT fk_Paper1CitesPaper2_PaperTable_PaperID FOREIGN KEY(Paper1ID) REFERENCES PaperTable(PaperID),
-  CONSTRAINT fk_Paper1CitesPaper2_PaperTable_PaperID FOREIGN KEY(Paper2ID) REFERENCES PaperTable(PaperID),
+  Paper1ID VARCHAR(20) NOT NULL,
+  Paper2ID VARCHAR(20) NOT NULL,
+  CONSTRAINT fk_Paper1CitesPaper2_PaperTable_Paper1ID FOREIGN KEY(Paper1ID) REFERENCES PaperTable(PaperID),
+  CONSTRAINT fk_Paper1CitesPaper2_PaperTable_Paper2ID FOREIGN KEY(Paper2ID) REFERENCES PaperTable(PaperID),
   PRIMARY KEY(Paper1ID, Paper2ID)
 );
 
 DROP TABLE IF EXISTS AffiliationOfAuthor;
 CREATE TABLE AffiliationOfAuthor (
-  AuthorID VARCHAR(15) NOT NULL,
-  AffiliationID VARCHAR(15) NOT NULL,
+  AuthorID VARCHAR(20) NOT NULL,
+  AffiliationID VARCHAR(20) NOT NULL,
   CONSTRAINT fk_AffiliationOfAuthor_AuthorTable_AuthorID FOREIGN KEY(AuthorID) REFERENCES AuthorTable(AuthorID),
   CONSTRAINT fk_AffiliationOfAuthor_AffiliationTable_AffiliationID FOREIGN KEY(AffiliationID) REFERENCES AffiliationTable(AffiliationID),
   PRIMARY KEY(AuthorID, AffiliationID)
@@ -91,8 +98,8 @@ CREATE TABLE AffiliationOfAuthor (
 
 DROP TABLE IF EXISTS ScopeOfConference;
 CREATE TABLE ScopeOfConference (
-  FieldID VARCHAR(15) NOT NULL,
-  ConferenceID VARCHAR(15) NOT NULL,
+  ConferenceID VARCHAR(20) NOT NULL,
+  FieldID VARCHAR(20) NOT NULL,
   CONSTRAINT fk_ScopeOfConference_ConferenceTable_ConferenceID FOREIGN KEY(ConferenceID) REFERENCES ConferenceTable(ConferenceID),
   CONSTRAINT fk_ScopeOfConference_FieldOfStudy_FieldID FOREIGN KEY(FieldID) REFERENCES FieldOfStudy(FieldID),
   PRIMARY KEY(ConferenceID, FieldID)
@@ -101,8 +108,8 @@ CREATE TABLE ScopeOfConference (
 
 DROP TABLE IF EXISTS PaperBelongsToScope;
 CREATE TABLE PaperBelongsToScope (
-  FieldID VARCHAR(15) NOT NULL,
-  PaperID VARCHAR(15) NOT NULL,
+  PaperID VARCHAR(20) NOT NULL,
+  FieldID VARCHAR(20) NOT NULL,
   CONSTRAINT fk_PaperBelongsToScope_PaperTable_PaperID FOREIGN KEY(PaperID) REFERENCES PaperTable(PaperID),
   CONSTRAINT fk_PaperBelongsToScope_FieldOfStudy_FieldID FOREIGN KEY(FieldID) REFERENCES FieldOfStudy(FieldID),
   PRIMARY KEY(PaperID, FieldID)
@@ -110,12 +117,17 @@ CREATE TABLE PaperBelongsToScope (
 
 DROP TABLE IF EXISTS AuthorInterestedInField;
 CREATE TABLE AuthorInterestedInField (
-  AuthorID VARCHAR(15) NOT NULL,
-  FieldID VARCHAR(15) NOT NULL,
+  AuthorID VARCHAR(20) NOT NULL,
+  FieldID VARCHAR(20) NOT NULL,
   CONSTRAINT fk_AuthorInterestedInField_AuthorTable_AuthorID FOREIGN KEY(AuthorID) REFERENCES AuthorTable(AuthorID),
   CONSTRAINT fk_AuthorInterestedInField_FieldOfStudy_FieldID FOREIGN KEY(FieldID) REFERENCES FieldOfStudy(FieldID),
   PRIMARY KEY(AuthorID, FieldID)
 );
+
+
+
+
+
 
 
 

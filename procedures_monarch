@@ -85,6 +85,55 @@ where Paper1CitesPaper2.Paper2ID=PID;
 end//
 
 --------------------------------------------------------------------------------
+#Author -> paper
+
+create procedure aut_con(AID varchar(15))
+begin
+select AuthorWritesPaper.PaperID
+from AuthorWritesPaper
+where AuthorWritesPaper.AuthorID=AID;
+end//
+
+--------------------------------------------------------------------------------
+#Author -> coauthor
+
+create procedure coauthor(AID varchar(15))
+begin
+select AuthorTable.AuthorName
+from AuthorTable
+where AuthorTable.AuthorID<>AID and AuthorTable.AuthorID in(
+select AuthorWritesPaper.AuthorID
+from AuthorWritesPaper
+where AuthorWritesPaper.PaperID in(
+select AuthorWritesPaper.PaperID
+from AuthorWritesPaper
+where AuthorWritesPaper.AuthorID=AID
+));
+end//
 
 
+-------------------------------------------------------------------------------
+#Author -> similar_aut
+
+create procedure similar_aut(AID varchar(15))
+begin
+select AuthorName
+from AuthorTable natural join AuthorInterestedInField
+where AuthorTable.AuthorID in(
+select AuthorID
+from AuthorTable natural join AuthorInterestedInField
+where FieldID in(
+select FieldID
+from AuthorTable natural join AuthorInterestedInField
+where AuthorID=AID
+));
+end//
+
+
+-------------------------------------------------------------------------------
+#Author -> conference
+
+create procedure aut_conf(AID varchar(15))
+begin
+select
 
