@@ -18,9 +18,31 @@
                     </div>
                     <div class="col-lg-10 author-info">
                         <h2 style="margin-left: 0px; margin-top: 50px">Author Information</h2>
-                        {% for detail in author %} 
-                        <p>{{ detail }}</p> 
+
+                        <!-- Author Field of Study -->
+                        <h4> Field of Study </h4>
+                        {% for field in auth_field %} 
+                                <p> {{ field[0] }} </p>
                         {% endfor %}
+
+                        <!-- Authors Conferences -->
+                        <h4> Conferences </h4>
+                        {% for conf in auth_conference %} 
+                                <a href="/conference/{{ conf[0] }}"> {{ conf[0] }} </a>   
+                        {% endfor %}
+
+                        <!-- Author Papers -->
+                        <h4> Papers </h4>
+                        {% for paper in auth_papers %} 
+                        <div class="card bg-light text-dark" style="margin-top:10px;">
+                            <div class="info" style="padding: 20px;">
+                                <a href="/paper/{{ paper[0] }}"> {{ paper[0] }} </a>
+                            </div>
+                        </div>    
+                        {% endfor %}
+
+
+
 
 
                         <div id="myDiv"></div>

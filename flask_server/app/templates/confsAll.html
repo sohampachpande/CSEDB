@@ -5,8 +5,35 @@
 
         {% include 'navbar.html' %}
 
-        {% for page in pages %} 
-        <p>{{ page }}</p> 
-        {% endfor %}
+        <section>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-2 author-letters card sticky-top" >
+                    	<h5 style="margin-top: 50px">All Conference Options</h5>
+                        <div class="links-auth">
+                            <p>All Conference Option 1 </p>
+                            <p>All Conference Option 2 </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-10 author-info">
+                        <h2 style="margin-left: 0px; margin-top: 50px">All Conferences Page</h2>
+        				<hr>
+
+                        {% for conf in pages %} 
+                        <div class="card bg-light text-dark" style="margin-top:10px;">
+                            <div class="info" style="padding: 20px;">
+                                <a href="/conference/{{ conf[0] }}"> {{ conf[1] }}-{{ conf[2] }} </a>
+                            </div>
+                        </div>    
+				        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+<!--         {% for page in pages %} 
+        <p>{{ page[0] }}</p> 
+        {% endfor %} -->
     </body>
 </html>

@@ -12,12 +12,10 @@ def get_all_papers():
     cursor.execute('SELECT * FROM PaperTable ')
     l = cursor.fetchall()
 
+    print("\n\nNo of Papers\n\n",len(l))
     # for a in l:
     #     a[1] = FirstNameLastName(a[1])
 
-    # Fetch a single row using fetchone()
-    # data = cursor.fetchone()
-    print(l)
     return render_template('papersAll.html', pages = l)
 
 

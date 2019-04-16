@@ -20,18 +20,6 @@ def index():
     return render_template('index.html', title='CSE DB', user=user)
 
 
-@app.route('/conferences_all', methods = ['GET'])
-def get_all_confs():
-    cursor = db.cursor()
-    # execute SQL query using execute() method.
-    cursor.execute('SELECT * FROM test_table ')
-    l = cursor.fetchall()
-    # Fetch a single row using fetchone()
-    # data = cursor.fetchone()
-    print(l)
-    return render_template('confsAll.html', pages = l)
-
-
 @app.route('/search', methods = ['POST'])
 def search():
     # name = request.form['Author']
