@@ -89,9 +89,13 @@ end//
 
 create procedure aut_con(AID varchar(15))
 begin
+select PaperTable.PaperName
+from PaperTable
+where PaperTable.PaperID in(
 select AuthorWritesPaper.PaperID
 from AuthorWritesPaper
-where AuthorWritesPaper.AuthorID=AID;
+where AuthorWritesPaper.AuthorID=AID
+);
 end//
 
 --------------------------------------------------------------------------------
@@ -135,5 +139,51 @@ end//
 
 create procedure aut_conf(AID varchar(15))
 begin
-select
+select ConferenceTable.ConferenceName
+from ConferenceTable
+where ConferenceTable.ConferenceID in(
+select PaperPublishedInConference.ConferenceID
+from PaperPublishedInConference
+where PaperPublishedInConference.PaperID in(
+select AuthorWritesPaper.PaperID 
+from AuthorWritesPaper
+where AuthorWritesPaper.AuthorID=AID
+));
+end//
+
+-------------------------------------------------------------------------------
+#Author -> referredbypaper
+
+
+create procedure referredbypaper(AID varchar(15))
+begin
+select PaperTable.PaperName
+from PaperTable
+where PaperTable.PaperID in(
+select Paper1CitesPaper2.Paper1ID
+from Paper1CitesPaper2
+where Paper1CitesPaper2.Paper2ID in(
+select AuthorWritesPaper.PaperID 
+from AuthorWritesPaper
+where AuthorWritesPaper.AuthorID=AID
+));
+end//
+
+
+-------------------------------------------------------------------------------
+#Author -> FOS
+
+create procedure FOS(AID varchar(15))
+begin
+select FieldOfStudy.FieldName
+from FieldOfStudy
+where FieldOfStudy.FieldID in(
+select AuthorInterestedInField.FieldID
+from AuthorInterestedInField
+where AuthorInterestedInField.AuthorID=AID
+);
+end//
+
+
+-------------------------------------------------------------------------------
 
