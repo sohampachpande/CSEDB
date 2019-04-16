@@ -16,6 +16,11 @@ def get_all_papers():
     # for a in l:
     #     a[1] = FirstNameLastName(a[1])
 
+<<<<<<< HEAD
+=======
+    # Fetch a single row using fetchone()
+    # data = cursor.fetchone()
+>>>>>>> e6e5a1061009fdfc4661054cbeb6fbf4108ec82a
     return render_template('papersAll.html', pages = l)
 
 
@@ -27,14 +32,30 @@ def individual_paper_page(paper_id):
     # execute SQL query using execute() method.
     cursor.execute('SELECT * FROM PaperTable WHERE  PaperID = "{}"'.format(paper_id))
     l = cursor.fetchall()
-    
+
+
+    cursor.execute('call  con_paper("{}")'.format(paper_id))
+    confs = cursor.fetchall()
+    # print(confs)
+
+    cursor.execute('call author_paper("{}")'.format(paper_id))
+    authors = cursor.fetchall()
+   
+    cursor.execute('call citation("{}")'.format(paper_id))
+    references = cursor.fetchall()
+
+    cursor.execute('call refers("{}")'.format(paper_id))
+    papers_cite_this = cursor.fetchall()
+
+    print(papers_cite_this)
+
+
     papers = l
-    confs = [['conf1', 'confid'], ['conf2', 'confid2']]
     # x =  ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
     y = [ 1, 3, 6,8 , 9, 0]
     x =  [1 , 2 , 3.5 , 4 , 5 , 6]
-    print(l)
-    return render_template('paper_temp.html', paper=l[0], x=x, y=y)
+    # print(l)
+    return render_template('paper_temp.html', paper=l[0], conferences = confs, authors = authors, references = references, papers_cite_this = papers_cite_this)
 
 @app.route('/author/<author_id>/papers', methods = ['GET'])
 def get_author_papers_page(author_id):

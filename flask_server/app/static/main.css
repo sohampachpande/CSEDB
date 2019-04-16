@@ -49,8 +49,17 @@
     height: 100%;
 }
 
+.author-info {
+    padding-left: 80px;
+    padding-right: 30px;
+}
+
 .author-info h1 {
     padding: 50px;
+}
+
+.author-names {
+    font-size: 18px;
 }
 
 .author-metadata p{
