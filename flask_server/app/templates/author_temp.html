@@ -7,8 +7,8 @@
         <section>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-3 author-metadata">
-                        <p class="author-name-side">Author name: Sahit</p>
+                    <div class="col-lg-2 author-metadata">
+                        <p class="author-name-side">Author: {{author[1]}}</p>
                         <div class="links-auth">
                             <p>About</p>
                             <a href="/author/{{ author[0] }}/papers">papers</a>
@@ -16,8 +16,8 @@
                             <p>Conferences</p>
                         </div>
                     </div>
-                    <div class="col-lg-9 author-info">
-                        <h1>Author Information</h1>
+                    <div class="col-lg-10 author-info">
+                        <h2 style="margin-left: 0px; margin-top: 50px">Author Information</h2>
                         {% for detail in author %} 
                         <p>{{ detail }}</p> 
                         {% endfor %}

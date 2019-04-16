@@ -8,7 +8,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-2 author-letters card sticky-top" >
-                    	<h4 style="margin-top: 50px">All Authors Initials</h4>
+                    	<h5 style="margin-top: 50px">All Authors Initials</h5>
                         <div class="letters">
                             <!-- <p>a</p>
                             <p>b</p>
@@ -19,17 +19,13 @@
                         </div>
                     </div>
                     <div class="col-lg-10 author-info">
-                        <h1>All Authors page</h1>
+                        <h2 style="margin-left: 0px; margin-top: 50px">All Authors page</h2>
         				<hr>
 
                         {% for author in authors %} 
                         <div class="card bg-light text-dark" style="margin-top:10px;">
                             <div class="info" style="padding: 20px;">
-                                {% set d = ['Author ID','Name',] %}
-                                {% for i in range(2) %}
-                                <p>{{ d[i] }} :- {{ author[i] }}</p>
-                                {% endfor %}
-                                <a href="/author/{{ author[0] }}">click here for author page</a>
+                                <a href="/author/{{ author[0] }}"> {{ author[1] }} </a>
                             </div>
                         </div>    
 				        {% endfor %}

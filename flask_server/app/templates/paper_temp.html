@@ -1,0 +1,51 @@
+<html>
+    <head>
+        {% include 'head.html' %}
+    </head>
+    <body>
+        {% include 'navbar.html' %}
+        <section>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-2 author-metadata">
+                        <p class="author-name-side"> Paper Details Sidebar</p>
+                        <div class="links-auth">
+                            <p>Paper Details Link 1 </p>
+                            <p>Paper Details Link 1 </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-10 author-info">
+                        <h2 style="margin-left: 0px; margin-top: 50px">{{paper[1]}}</h2>
+                        <div id="myDiv"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script>
+            function stringArr(string){
+                var len = string.length;
+                var l = string.substring(1, len-1).split(",").map(Number);
+                return l;
+            }
+        </script>
+
+        <script>
+            // console.log("{{ x }}");
+            // console.log("{{ y }}")
+            var data = [
+                {
+                    x: stringArr("{{ x }}"),
+                    y: stringArr("{{ y }}"),
+                    type: 'scatter'
+                }
+            ];
+            var l = stringArr("{{ x }}")
+            console.log(l);
+            Plotly.newPlot('myDiv', data, {}, {showSendToCloud: true});
+        </script>
+    </body>
+</html>
