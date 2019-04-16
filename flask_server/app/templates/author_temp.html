@@ -36,7 +36,7 @@
                         <h4> Conferences </h4>
                         <p class="author-names" style="margin-left: 50px;">
                             {% for conf in auth_conference %}
-                                   <li> <a href="/conference/{{ conf[0] }}"> {{ conf[1] }}-{{conf[2]}},  </a>   
+                                   <li> <a href="/conference/{{ conf[0] }}"> {{ conf[1] }}-{{conf[2]}}</a>   
                             {% endfor %}
                         </p>
                         <hr><hr>
@@ -48,7 +48,7 @@
                         {% for paper in auth_papers %}
                                 <li><a href="/paper/{{ paper[0] }}"> {{ paper[1] }} </a>
                         {% endfor %}
-                        <hr><hr>
+                        <hr>
                         {% endif %}
                         
                         {% if auth_coauth|length!=0 %}
@@ -57,7 +57,7 @@
                         {% for coauth in auth_coauth %} 
                                 <li><a href="/author/{{ coauth[0] }}"> {{ coauth[1] }} </a>
                         {% endfor %}
-                        <hr><hr>
+                        <hr>    
                         {%endif%}
 
 
