@@ -16,11 +16,6 @@ def get_all_papers():
     # for a in l:
     #     a[1] = FirstNameLastName(a[1])
 
-<<<<<<< HEAD
-=======
-    # Fetch a single row using fetchone()
-    # data = cursor.fetchone()
->>>>>>> e6e5a1061009fdfc4661054cbeb6fbf4108ec82a
     return render_template('papersAll.html', pages = l)
 
 
