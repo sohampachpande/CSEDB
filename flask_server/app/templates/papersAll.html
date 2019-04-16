@@ -20,9 +20,14 @@
         				<hr>
 
                         {% for paper in pages %} 
-                        <div class="card bg-light text-dark" style="margin-top:10px;">
-                            <div class="info" style="padding: 20px;">
+                        <div class="card bg-light text-dark" style="margin-top:10px; margin-bottom: 10px">
+                            <div class="info" style="margin-left: 20px; margin-top: 10px">
                                 <a href="/paper/{{ paper[0] }}"> {{ paper[1] }} </a>
+                            </div>
+                            <div class="info" style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px">
+                            {% for auth in authors[paper[0]] %}
+                                <a style='margin-left: 20px' href="/author/{{ auth[0] }}"> {{ auth[1] }} </a> 
+                            {% endfor %}
                             </div>
                         </div>    
 				        {% endfor %}
