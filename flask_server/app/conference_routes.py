@@ -14,5 +14,7 @@ def get_all_confs():
 @app.route('/conference/<conf_id>', methods = ['GET'])
 def get_conf_individual(conf_id):
     cursor = db.cursor()
-    return 'Page Incomplete'
-
+    cursor.execute('SELECT * FROM ConferenceTable WHERE ConferenceID="{}"'.format(conf_id))
+    conf_details = cursor.fetchall()
+    print(conf_details)
+    return render_template('conf_temp.html', conf = conf_details[0])
