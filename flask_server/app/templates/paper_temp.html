@@ -21,7 +21,7 @@
                             <h4>Authors</h4> 
                             <p class="author-names" style="margin-left: 50px;"> 
                             {% for author in authors %}
-                                {{ author[0] }} , 
+                                <a href="/author/{{ author[0] }}" style="text-decoration: none; ">{{ author[1] }}</a> , 
                             {% endfor %}
                             </p>
                         </div>
@@ -29,22 +29,23 @@
                         <div>
                             <h4>Conference presented in :-</h4>
                             {% for conference in conferences %}
-                                <li>{{ conference[0] }}</li>
+                                <li><a href="/conference/{{ conference[0] }}">{{ conference[1] }}</a></li>
                             {% endfor %}
                         </div>
                         <div style="padding-top: 40px">
                             <h4>References :-</h4>
                             {% for reference in references %}
-                                <li>{{ reference[0] }}</li>
+                                <li><a href="/paper/{{ reference[0] }}" style="text-decoration: none; color: black">{{ reference[1] }}</a></li>
                             {% endfor %}
                         </div>
-                        <div style="padding-top: 40px">
+                        <div style="padding-top: 40px; padding-bottom: 200px">
                             <h4> Papers which site the following paper :-</h4>
                             {% for paper in papers_cite_this %}
-                                <li>{{ paper[0] }}</li>
+                                <li><a href="/paper/{{ paper[0] }}" style="text-decoration: none; color: black">{{ paper[1] }}</a></li>
                             {% endfor %}
                         </div>
-                        <div id="myDiv"></div>
+                        <!-- <div id="myDiv"></div>  
+                        Graph div -->
                     </div>
                 </div>
             </div>

@@ -43,6 +43,7 @@ def individual_paper_page(paper_id):
     papers_cite_this = cursor.fetchall()
 
     print(papers_cite_this)
+    print(authors)
 
 
     papers = l
