@@ -7,7 +7,7 @@
         <section>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-2 author-metadata">
+                    <div class="col-lg-2 author-metadata card sticky-top">
                         <p class="author-name-side"> Paper Details Sidebar</p>
                         <div class="links-auth">
                             <p>Paper Details Link 1 </p>
@@ -15,7 +15,35 @@
                         </div>
                     </div>
                     <div class="col-lg-10 author-info">
-                        <h2 style="margin-left: 0px; margin-top: 50px">{{paper[1]}}</h2>
+                        <h2 style="margin-left: 0px; margin-top: 50px; margin-left: -20px;">{{paper[1]}}</h2>
+                        <br><br>
+                        <div>
+                            <h4>Authors</h4> 
+                            <p class="author-names" style="margin-left: 50px;"> 
+                            {% for author in authors %}
+                                {{ author[0] }} , 
+                            {% endfor %}
+                            </p>
+                        </div>
+                        <br>
+                        <div>
+                            <h4>Conference presented in :-</h4>
+                            {% for conference in conferences %}
+                                <li>{{ conference[0] }}</li>
+                            {% endfor %}
+                        </div>
+                        <div style="padding-top: 40px">
+                            <h4>References :-</h4>
+                            {% for reference in references %}
+                                <li>{{ reference[0] }}</li>
+                            {% endfor %}
+                        </div>
+                        <div style="padding-top: 40px">
+                            <h4> Papers which site the following paper :-</h4>
+                            {% for paper in papers_cite_this %}
+                                <li>{{ paper[0] }}</li>
+                            {% endfor %}
+                        </div>
                         <div id="myDiv"></div>
                     </div>
                 </div>
