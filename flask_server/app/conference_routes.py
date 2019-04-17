@@ -8,7 +8,18 @@ def get_all_confs():
     cursor = db.cursor()
     cursor.execute('SELECT * FROM ConferenceTable')
     l = cursor.fetchall()
-    return render_template('confsAll.html', pages = l)
+
+    confs = list()
+    d = dict()
+    for i in l:
+        try:
+            d[i[1]].append((int(i[2]), i[0]))
+        except:
+            d[i[1]] = [(int(i[2]), i[0])]
+    for i in list(d.keys()):
+        confs.append((i, sorted(d[i], key=lambda x: x[0])))
+    print(confs[0])
+    return render_template('confsAll.html', pages = confs)
 
 
 @app.route('/conference/<conf_id>', methods = ['GET'])
