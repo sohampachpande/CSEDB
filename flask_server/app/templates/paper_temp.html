@@ -63,7 +63,7 @@
                             </div>
                         </div>
 
-                        
+                        <h4 style="margin:20px">Distribution of Citations over time</h4>
                         <div id="myDiv"></div> 
                     </div>
                 </div>
@@ -91,6 +91,10 @@
                     type: 'bar'
                 }
             ];
+            var layout = {
+              title: 'Distribution of Citations over time',
+              xaxis: {range: [1965, 2015]}
+            };
             var l = stringArr("{{ x }}")
             console.log(l);
             Plotly.newPlot('myDiv', data, {}, {showSendToCloud: true});
