@@ -9,11 +9,12 @@
                 <div class="row">
 
                     <div class="col-lg-10 author-info offset-lg-1">
-                        <h2 style="margin-left: 0px; margin-top: 50px">All papers</h2>
-                        <hr>
-                        {{ pagination.info  }}
-                        {{ pagination.links }}
-
+                        <h2 style="margin-left: 0px; margin-top: 50px">Papers</h2>
+                        
+                        <form action="/papers_all">
+                          Sort by: &nbsp;&nbsp;
+                          <input class="btn btn--sm " name="sort" style="background: #eeeeee;color:black ;" type="submit" value="Citation Count">  
+                        </form>
                         {% for paper in data_papers %} 
                             <div class="info card bg-light text-dark" style="margin-top: 10px;">
                                 <p style="margin-left: 5px; margin-top: 20px">
@@ -44,6 +45,10 @@
 
                             </div> 
                         {% endfor %}
+                        <br>
+                        {{ pagination.info  }}
+                        {{ pagination.links }}
+
                     </div>
                 </div>
             </div>

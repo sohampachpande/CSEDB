@@ -1,4 +1,6 @@
 from flask import render_template, request, redirect
+from flask_paginate import Pagination, get_page_parameter
+
 from app import app
 
 from app import db

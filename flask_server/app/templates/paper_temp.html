@@ -7,55 +7,62 @@
         <section>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-2 author-metadata card sticky-top">
-                        <p class="author-name-side"> Paper Details Sidebar</p>
-                        <div class="links-auth">
-                            <p>Paper Details Link 1 </p>
-                            <p>Paper Details Link 1 </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-10 author-info" style="padding-left: 60px;">
+                    <div class="col-lg-10 author-info offset-lg-1" style="padding-left: 60px;">
                         <h2 style="margin-left: 0px; margin-top: 50px; margin-left: -20px;">{{paper[1]}}</h2>
                         <br><br>
 
                         {% if authors|length!=0 %}
                         <div>
-                            <h4>Authors</h4> 
-                            <p class="author-names" style="margin-left: 50px;"> 
+                            <h4>Author(s)</h4> 
+                            <p style="margin-left: 50px;"> 
                             {% for author in authors %}
-                                <a href="/author/{{ author[0] }}">{{ author[1] }}</a> , 
+                                <a href="/author/{{ author[0] }}">{{ author[1] }}</a>  . 
                             {% endfor %}
                             </p>
                         </div>
-                        <br>
+                        <hr>
                         {% endif %}
+
                         
-
+                        
+                        {% if conferences|length!=0 %}
                         <div>
-                            <h4>Conference presented in :-</h4>
+                            <h4>Conference(s)</h4>
+                            <p style="margin-left: 50px;"> 
                             {% for conference in conferences %}
-                                <li><a href="/conference/{{ conference[0] }}">{{ conference[1] }}-{{ conference[2]}}</a></li>
+                                <a href="/conference/{{ conference[0] }}">{{ conference[1] }}-{{ conference[2]}}</a> ,
                             {% endfor %}
                         </div>
-
-
-                        {% if references|length!=0 %}
-                        <div style="padding-top: 40px">
-                            <h4>References :-</h4>
-                            {% for reference in references %}
-                                <li><a href="/paper/{{ reference[0] }}">{{ reference[1] }}</a></li>
-                            {% endfor %}
-                        </div>
+                        <hr>
                         {% endif %}
 
-                        {% if papers_cite_this|length!=0 %}
-                        <div style="padding-top: 40px; padding-bottom: 200px">
-                            <h4> Papers which cite the following paper :-</h4>
-                            {% for paper in papers_cite_this %}
-                                <li><a href="/paper/{{ paper[0] }}">{{ paper[1] }}</a></li>
-                            {% endfor %}
+
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#home">Reference(s)</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#menu1">Cited by</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div id="home" class="container tab-pane active" style="margin-left: 0px"><br>
+                                <ol>
+                                {% for reference in references %}
+                                    <li style="margin-left: -15px;"><a href="/paper/{{ reference[0] }}">{{ reference[1] }}</a></li>
+                                {% endfor %}
+                                </ol>
+                            </div>
+                            <div id="menu1" class="container tab-pane fade" style="margin-left: 0px"><br>
+                                <ol>
+                                {% for paper in papers_cite_this %}
+                                    <li style="margin-left: -15px;"><a href="/paper/{{ paper[0] }}">{{ paper[1] }}</a></li>
+                                {% endfor %}
+                                </ol>
+                            </div>
                         </div>
-                        {% endif %}
+                        
                         <!-- <div id="myDiv"></div>  
                         Graph div -->
                     </div>

@@ -31,7 +31,6 @@ def get_all_authors():
 
 
     sort_convention = request.args.get("sort", type=str, default="random")
-    print(sort_convention)
 
     if sort_convention == 'Citation Count':
         cursor.execute('CALL sort_authors_by_citations()')

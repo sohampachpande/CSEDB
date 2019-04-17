@@ -7,25 +7,16 @@
         <section>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-2 author-letters card sticky-top">
-                        <p class="author-name-side">Author: {{author[1]}}</p>
-                        <div class="links-auth">
-                            <p>About</p>
-                            <a href="/author/{{ author[0] }}/papers">papers</a>
-                            <p>Co-authors</p>
-                            <p>Conferences</p>
-                        </div>
-                    </div>
-                    <div class="col-lg-10 author-info" style="padding-left: 60px;">
+                    <div class="col-lg-10 author-info offset-lg-1" style="padding-left: 60px;">
                         <h2 style="margin-left: 0px; margin-top: 50px; margin-left: -20px;">{{author[1]}}</h2>
                         <br><br>
 
                         {% if auth_field|length!=0 %}
                         <!-- Author Field of Study -->
                         <h4> Field of Study </h4>
-                        <p class="author-names" style="margin-left: 50px;">
+                        <p style="margin-left: 50px;">
                             {% for field in auth_field %} 
-                                    <li>{{ field[1] }} 
+                                    <a href="/fos/{{ field[0] }}">{{ field[1] }} </a>
                             {% endfor %}
                         </p>
                         <hr>

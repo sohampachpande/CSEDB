@@ -30,10 +30,18 @@ def all_paper_pagination(all_paper,offset, per_page):
 # All Papers page
 @app.route('/papers_all', methods = ['GET'])
 def get_all_papers():
+
+    sort_convention = request.args.get("sort", type=str, default="random")
+
     cursor = db.cursor()
-    # execute SQL query using execute() method.
-    cursor.execute('SELECT * FROM PaperTable ')
-    all_paper = cursor.fetchall()
+
+    if sort_convention == 'Citation Count':
+        cursor.execute('CALL sort_papers_by_citations()')
+        all_paper = cursor.fetchall()
+    else:
+        # execute SQL query using execute() method.
+        cursor.execute('SELECT * FROM PaperTable ')
+        all_paper = cursor.fetchall()
 
     cursor.close()
 
@@ -42,7 +50,7 @@ def get_all_papers():
     page = request.args.get(get_page_parameter(), type=int, default=1)
     
     pagination_data = all_paper_pagination(all_paper, offset=page, per_page=20)
-    pagination = Pagination(page=page, total=total, css_framework='bootstrap4')
+    pagination = Pagination(page=page, total=total, css_framework='bootstrap4',display_msg='''Showing <b>{start} - {end}</b> {record_name} from <b>{total}</b> entries''')
 
     return render_template('papersAll.html', data_papers=pagination_data,
                            page=page,
