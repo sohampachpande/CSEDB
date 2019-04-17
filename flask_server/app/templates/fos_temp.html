@@ -1,0 +1,81 @@
+<html>
+	{% include 'head.html' %}
+	
+    <body>
+
+        {% include 'navbar.html' %}
+
+        <section>
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- <div class="col-lg-2 author-letters card sticky-top" >
+                    	<h5 style="margin-top: 50px">All Conference Options</h5>
+                        <div class="links-auth">
+                            <p>All Conference Option 1 </p>
+                            <p>All Conference Option 2 </p>
+                        </div> -->
+                    </div>
+                    <div class="col-lg-10 offset-lg-1 author-info">
+                        <h2 style="margin-left: 0px; margin-top: 50px">Fields of Study</h2>
+
+                        <!-- <input type="text" id="myInput1" onkeyup="myFunction1()" placeholder="Search by Conference..." title="Type in a name" style="padding:10px; width:300px; ">
+                        <input type="text" id="myInput2" onkeyup="myFunction2()" placeholder="Search by Year..." title="Type in a name" style="padding:10px; width:300px; ">
+        				<hr> -->
+
+                        {% for fos in fos_list %} 
+                        {% if fos[0] == fos_id %}
+                        <a href="/fos/{{ fos[0] }}"><button type="button" class="btn btn-light active" style="padding: 10px; margin-top:10px;">{{ fos[1] }}</button></a>
+                        {% else %}
+                        <a href="/fos/{{ fos[0] }}"><button type="button" class="btn btn-light" style="padding: 10px; margin-top:10px;">{{ fos[1] }}</button></a>
+                        {% endif %}
+                        {% endfor %}
+                        <hr>
+
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#home">Papers</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#menu1">Authors</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#menu2">Conferences</a>
+                            </li>
+                        </ul>
+
+
+                        <div class="tab-content">
+                            <div id="home" class="container tab-pane active"><br>
+                                {% for paper in papers %} 
+                                    <div class="info" style="padding: 20px;">
+                                        <a href="/paper/{{ paper[0] }}"><h5>{{ paper[1] }}</h5></a>
+                                    </div>
+                                    <hr>  
+                                {% endfor %}
+                            </div>
+                            <div id="menu1" class="container tab-pane fade"><br>
+                                {% for author in authors %} 
+                                    <div class="info" style="padding: 20px;">
+                                        <a href="/author/{{ author[0] }}"><h5>{{ author[1] }}</h5></a>
+                                    </div>
+                                    <hr>  
+                                {% endfor %}
+                            </div>
+                            <div id="menu2" class="container tab-pane fade"><br>
+                                {% for conf in conferences %} 
+                                    <div class="info" style="padding: 20px;">
+                                        <a href="/conference/{{ conf[0] }}"><h5>{{ conf[1] }} - {{ conf[2] }}</h5></a>
+                                    </div>
+                                    <hr>  
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </body>
+
+</html>

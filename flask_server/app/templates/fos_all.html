@@ -1,0 +1,35 @@
+<html>
+	{% include 'head.html' %}
+	
+    <body>
+
+        {% include 'navbar.html' %}
+
+        <section>
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- <div class="col-lg-2 author-letters card sticky-top" >
+                    	<h5 style="margin-top: 50px">All Conference Options</h5>
+                        <div class="links-auth">
+                            <p>All Conference Option 1 </p>
+                            <p>All Conference Option 2 </p>
+                        </div> -->
+                    </div>
+                    <div class="col-lg-10 offset-lg-1 author-info">
+                        <h2 style="margin-left: 0px; margin-top: 50px">Fields of Study</h2>
+
+                        <!-- <input type="text" id="myInput1" onkeyup="myFunction1()" placeholder="Search by Conference..." title="Type in a name" style="padding:10px; width:300px; ">
+                        <input type="text" id="myInput2" onkeyup="myFunction2()" placeholder="Search by Year..." title="Type in a name" style="padding:10px; width:300px; ">
+        				<hr> -->
+
+                        {% for fos in fos_list %} 
+                        <a href="/fos/{{ fos[0] }}"><button type="button" class="btn btn-light" style="padding: 10px; margin-top:10px;">{{ fos[1] }}</button></a>
+				        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </body>
+
+</html>

@@ -35,6 +35,13 @@ def get_all_papers():
     cursor.execute('SELECT * FROM PaperTable ')
     all_paper = cursor.fetchall()
 
+    authors_l = {}
+    for id_,name in l:
+        # print('\n\n',id_,name)
+        cursor.execute('call author_paper("{}")'.format(id_))
+        authors_l[id_]=cursor.fetchall()
+        # print(authors_l[id_])
+
     cursor.close()
 
     total = len(all_paper)
