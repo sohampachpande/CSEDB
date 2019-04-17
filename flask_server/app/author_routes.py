@@ -79,7 +79,8 @@ def get_author_page(author_id):
 
     cursor.execute('call coauthor("{}")'.format(author_id))
     a_coauth = cursor.fetchall()
-    # x =  ['2013-10-04 22:23:00', '2013-11-04 22:23:00', '2013-12-04 22:23:00'],
+
+
     y = [ 1, 3, 6,8 , 9, 0]
     x =  [1 , 2 , 3.5 , 4 , 5 , 6]
 

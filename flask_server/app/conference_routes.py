@@ -18,7 +18,7 @@ def get_all_confs():
             d[i[1]] = [(int(i[2]), i[0])]
     for i in list(d.keys()):
         confs.append((i, sorted(d[i], key=lambda x: x[0])))
-    print(confs[0])
+
     return render_template('confsAll.html', pages = confs)
 
 
@@ -27,5 +27,15 @@ def get_conf_individual(conf_id):
     cursor = db.cursor()
     cursor.execute('SELECT * FROM ConferenceTable WHERE ConferenceID="{}"'.format(conf_id))
     conf_details = cursor.fetchall()
-    print(conf_details)
-    return render_template('conf_temp.html', conf = conf_details[0])
+
+    cursor.execute('CALL conference_FieldOfStudy("{}")'.format(conf_id))
+    fos = cursor.fetchall()
+
+    cursor.execute('CALL conference_PaperNames("{}")'.format(conf_id))
+    papers = cursor.fetchall()
+
+    cursor.execute('CALL conference_AuthorNames("{}")'.format(conf_id))
+    authors = cursor.fetchall()
+
+    cursor.close()
+    return render_template('conf_temp.html', conf = conf_details[0], fos=fos, papers=papers, authors=authors, no_authors = len(authors), no_papers=len(papers))

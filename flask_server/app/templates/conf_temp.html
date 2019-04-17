@@ -4,36 +4,74 @@
     </head>
     <body>
         {% include 'navbar.html' %}
-
         <section>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-2 author-metadata card sticky-top">
-                        <p class="author-name-side"> Conference Details Sidebar</p>
-                        <div class="links-auth">
-                            <p>Conference Details Link 1 </p>
-                            <p>Conference Details Link 1 </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-10 author-info" style="padding-left: 60px;">
-                        <h2 style="margin-left: 0px; margin-top: 50px; margin-left: -20px;">{{conf[1]}}-{{conf[2]}}</h2>
+                    <div class="col-lg-10 author-info offset-lg-1" style="padding-left: 60px;">
+                        <h2 style="margin-left: 0px; margin-top: 50px; margin-left: -20px;">{{conf[1]}} - {{conf[2]}}</h2>
                         <br><br>
 
-                        <h1>Add Content Here</h1> 
-                        <!-- {% if author|length!=0 %}
                         <div>
-                            <h4>Authors</h4> 
-                            <p class="author-names" style="margin-left: 50px;"> 
-                            {% for author in authors %}
-                                <a href="/author/{{ author[0] }}">{{ author[1] }}</a> , 
+                                <p style="margin-left: 50px;"> Number of Accepted Papers - {{ no_papers }} &nbsp;&nbsp;&nbsp;&nbsp; Number of Authors - {{ no_authors }}
+                                </p>       
+                        </div>
+                        <hr>
+
+                        {% if fos|length!=0 %}
+                        <div>
+                            <h4>FOS</h4> 
+                            <p style="margin-left: 50px;"> 
+                            {% for f in fos %}
+                                <a href="/fos/{{ f[0] }}">{{ f[1] }}</a>  . 
                             {% endfor %}
                             </p>
                         </div>
-                        <br>
-                        {% endif %} -->
+                        <hr>
+                        {% endif %}
+
                         
-                        <!-- <div id="myDiv"></div>  
-                        Graph div -->
+                        
+                        <!-- {% if conferences|length!=0 %}
+                        <div>
+                            <h4>Conference(s)</h4>
+                            <p style="margin-left: 50px;"> 
+                            {% for conference in conferences %}
+                                <a href="/conference/{{ conference[0] }}">{{ conference[1] }}-{{ conference[2]}}</a> ,
+                            {% endfor %}
+                        </div>
+                        <hr>
+                        {% endif %} -->
+
+
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#home">Author(s)</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#menu1">Paper(s)</a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div id="home" class="container tab-pane active" style="margin-left: 0px"><br>
+                                <ol>
+                                {% for reference in authors %}
+                                    <li style="margin-left: -15px;"><a href="/author/{{ reference[0] }}">{{ reference[1] }}</a></li>
+                                {% endfor %}
+                                </ol>
+                            </div>
+                            <div id="menu1" class="container tab-pane fade" style="margin-left: 0px"><br>
+                                <ol>
+                                {% for paper in papers %}
+                                    <li style="margin-left: -15px;"><a href="/paper/{{ paper[0] }}">{{ paper[1] }}</a></li>
+                                {% endfor %}
+                                </ol>
+                            </div>
+                        </div>
+
+                        
+                        <!-- <div id="myDiv"></div>  -->
+
                     </div>
                 </div>
             </div>
@@ -57,7 +95,7 @@
                 {
                     x: stringArr("{{ x }}"),
                     y: stringArr("{{ y }}"),
-                    type: 'scatter'
+                    type: 'bar'
                 }
             ];
             var l = stringArr("{{ x }}")
