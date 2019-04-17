@@ -8,23 +8,29 @@
         <section>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-2 author-letters card sticky-top" >
+                    <!-- <div class="col-lg-2 author-letters card sticky-top" >
                     	<h5 style="margin-top: 50px">All Conference Options</h5>
                         <div class="links-auth">
                             <p>All Conference Option 1 </p>
                             <p>All Conference Option 2 </p>
-                        </div>
+                        </div> -->
                     </div>
-                    <div class="col-lg-10 author-info">
+                    <div class="col-lg-8 offset-lg-1 author-info">
                         <h2 style="margin-left: 0px; margin-top: 50px">All Conferences Page</h2>
+
+                        <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for Year or Conference..." title="Type in a name" style="padding:10px; width:400px; ">
         				<hr>
 
                         {% for conf in pages %} 
-                        <div class="card bg-light text-dark" style="margin-top:10px;">
+                        <div class="conf_name" style="margin-top:10px;">
                             <div class="info" style="padding: 20px;">
-                                <a href="/conference/{{ conf[0] }}"> {{ conf[1] }}-{{ conf[2] }} </a>
+                                <a href="/conference/{{ conf[0] }}"><h5>{{ conf[0] }}</h5></a>
+                                {% for year in conf[1] %}
+                                <a href="/conference/{{ year[1] }}"><button type="button" class="btn btn-light" style="padding: 10px; margin-top:10px;">{{ year[0] }}</button></a>
+                                {% endfor %}
                             </div>
-                        </div>    
+                            <hr>  
+                        </div>  
 				        {% endfor %}
                     </div>
                 </div>
@@ -35,5 +41,28 @@
 <!--         {% for page in pages %} 
         <p>{{ page[0] }}</p> 
         {% endfor %} -->
+
+
+        <script>
+            function myFunction() {
+                var input, filter, conference_boxes;
+                input = document.getElementById("myInput");
+                filter = input.value.toUpperCase();
+                conference_boxes = document.getElementsByClassName("conf_name");
+                console.log(conference_boxes);
+                for (i = 0; i < conference_boxes.length; i++) {
+                    t = conference_boxes[i];
+                    txtValue = t.textContent || t.innerText;
+                    console.log("a");
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        t.style.display = "";
+                    } 
+                    else {
+                        t.style.display = "none";
+                    }    
+                }
+            }
+        </script>
+
     </body>
 </html>
