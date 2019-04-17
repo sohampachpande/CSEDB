@@ -12,11 +12,14 @@ def get_all_papers():
     cursor.execute('SELECT * FROM PaperTable ')
     l = cursor.fetchall()
 
-    print("\n\nNo of Papers\n\n",len(l))
-    # for a in l:
-    #     a[1] = FirstNameLastName(a[1])
+    authors_l = {}
+    for id_,name in l:
+        print('\n\n',id_,name)
+        cursor.execute('call author_paper("{}")'.format(id_))
+        authors_l[id_]=cursor.fetchall()
+        print(authors_l[id_])
 
-    return render_template('papersAll.html', pages = l)
+    return render_template('papersAll.html', pages = l , authors = authors_l)
 
 
 # Individual paper page

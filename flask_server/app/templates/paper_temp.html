@@ -17,33 +17,45 @@
                     <div class="col-lg-10 author-info">
                         <h2 style="margin-left: 0px; margin-top: 50px; margin-left: -20px;">{{paper[1]}}</h2>
                         <br><br>
+
+                        {% if authors|length!=0 %}
                         <div>
                             <h4>Authors</h4> 
                             <p class="author-names" style="margin-left: 50px;"> 
                             {% for author in authors %}
-                                <a href="/author/{{ author[0] }}" style="text-decoration: none; ">{{ author[1] }}</a> , 
+                                <a href="/author/{{ author[0] }}">{{ author[1] }}</a> , 
                             {% endfor %}
                             </p>
                         </div>
                         <br>
+                        {% endif %}
+                        
+
                         <div>
                             <h4>Conference presented in :-</h4>
                             {% for conference in conferences %}
-                                <li><a href="/conference/{{ conference[0] }}">{{ conference[1] }}</a></li>
+                                <li><a href="/conference/{{ conference[0] }}">{{ conference[1] }}-{{ conference[2]}}</a></li>
                             {% endfor %}
                         </div>
+
+
+                        {% if references|length!=0 %}
                         <div style="padding-top: 40px">
                             <h4>References :-</h4>
                             {% for reference in references %}
-                                <li><a href="/paper/{{ reference[0] }}" style="text-decoration: none; color: black">{{ reference[1] }}</a></li>
+                                <li><a href="/paper/{{ reference[0] }}">{{ reference[1] }}</a></li>
                             {% endfor %}
                         </div>
+                        {% endif %}
+
+                        {% if papers_cite_this|length!=0 %}
                         <div style="padding-top: 40px; padding-bottom: 200px">
                             <h4> Papers which site the following paper :-</h4>
                             {% for paper in papers_cite_this %}
-                                <li><a href="/paper/{{ paper[0] }}" style="text-decoration: none; color: black">{{ paper[1] }}</a></li>
+                                <li><a href="/paper/{{ paper[0] }}">{{ paper[1] }}</a></li>
                             {% endfor %}
                         </div>
+                        {% endif %}
                         <!-- <div id="myDiv"></div>  
                         Graph div -->
                     </div>

@@ -1,0 +1,68 @@
+<html>
+    <head>
+        {% include 'head.html' %}
+    </head>
+    <body>
+        {% include 'navbar.html' %}
+
+        <section>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-2 author-metadata card sticky-top">
+                        <p class="author-name-side"> Conference Details Sidebar</p>
+                        <div class="links-auth">
+                            <p>Conference Details Link 1 </p>
+                            <p>Conference Details Link 1 </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-10 author-info">
+                        <h2 style="margin-left: 0px; margin-top: 50px; margin-left: -20px;">{{conf[1]}}-{{conf[2]}}</h2>
+                        <br><br>
+
+                        <h1>Add Content Here</h1> 
+                        <!-- {% if author|length!=0 %}
+                        <div>
+                            <h4>Authors</h4> 
+                            <p class="author-names" style="margin-left: 50px;"> 
+                            {% for author in authors %}
+                                <a href="/author/{{ author[0] }}">{{ author[1] }}</a> , 
+                            {% endfor %}
+                            </p>
+                        </div>
+                        <br>
+                        {% endif %} -->
+                        
+                        <!-- <div id="myDiv"></div>  
+                        Graph div -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script>
+            function stringArr(string){
+                var len = string.length;
+                var l = string.substring(1, len-1).split(",").map(Number);
+                return l;
+            }
+        </script>
+
+        <script>
+            // console.log("{{ x }}");
+            // console.log("{{ y }}")
+            var data = [
+                {
+                    x: stringArr("{{ x }}"),
+                    y: stringArr("{{ y }}"),
+                    type: 'scatter'
+                }
+            ];
+            var l = stringArr("{{ x }}")
+            console.log(l);
+            Plotly.newPlot('myDiv', data, {}, {showSendToCloud: true});
+        </script>
+    </body>
+</html>

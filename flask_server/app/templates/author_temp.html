@@ -20,44 +20,45 @@
                         <h2 style="margin-left: 0px; margin-top: 50px; margin-left: -20px;">{{author[1]}}</h2>
                         <br><br>
 
+                        {% if auth_field|length!=0 %}
                         <!-- Author Field of Study -->
                         <h4> Field of Study </h4>
                         <p class="author-names" style="margin-left: 50px;">
                             {% for field in auth_field %} 
-                                    {{ field[0] }} 
+                                    <li>{{ field[1] }} 
                             {% endfor %}
                         </p>
                         <hr>
+                        {%endif%}
+
+                        {% if auth_conference|length!=0 %}
                         <!-- Authors Conferences -->
                         <h4> Conferences </h4>
                         <p class="author-names" style="margin-left: 50px;">
                             {% for conf in auth_conference %}
-                            <div class="author-names" style="margin-top:10px;margin-left: 25px;">
-                                   <li> <a href="/conference/{{ conf[0] }}"> {{ conf[1] }}-{{conf[2]}},  </a>   
-                            </div>
+                                   <li> <a href="/conference/{{ conf[0] }}"> {{ conf[1] }}-{{conf[2]}}</a>   
                             {% endfor %}
                         </p>
-                        <hr>
+                        <hr><hr>
+                        {%endif%}
 
                         {% if auth_papers|length!=0 %}
                         <!-- Author Papers -->
                         <h4> Papers </h4>
-                        {% for paper in auth_papers %} 
-                        <div class="author-names" style="margin-top:10px;margin-left: 25px;">
+                        {% for paper in auth_papers %}
                                 <li><a href="/paper/{{ paper[0] }}"> {{ paper[1] }} </a>
-                        </div>    
                         {% endfor %}
-                        <hr><hr>
+                        <hr>
                         {% endif %}
                         
+                        {% if auth_coauth|length!=0 %}
                         <!-- Author Co Authors -->
                         <h4> Co-Authors </h4>
                         {% for coauth in auth_coauth %} 
-                        <div class="author-names" style="margin-top:10px;margin-left: 25px;">
                                 <li><a href="/author/{{ coauth[0] }}"> {{ coauth[1] }} </a>
-                        </div>    
                         {% endfor %}
-                        <hr><hr>
+                        <hr>    
+                        {%endif%}
 
 
 
