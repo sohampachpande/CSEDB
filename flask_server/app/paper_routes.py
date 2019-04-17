@@ -14,10 +14,10 @@ def get_all_papers():
 
     authors_l = {}
     for id_,name in l:
-        print('\n\n',id_,name)
+        # print('\n\n',id_,name)
         cursor.execute('call author_paper("{}")'.format(id_))
         authors_l[id_]=cursor.fetchall()
-        print(authors_l[id_])
+        # print(authors_l[id_])
 
     return render_template('papersAll.html', pages = l , authors = authors_l)
 
