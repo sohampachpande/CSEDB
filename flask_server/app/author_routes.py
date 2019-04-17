@@ -17,17 +17,35 @@ def all_author_pagination(all_authors,offset, per_page):
         citations = cursor.fetchall()
         cursor.execute('CALL author_affiliation("{}")'.format(a[0]))
         affiliation = cursor.fetchall()
-
-        return_list.append([a[0], a[1], fos, no_papers[0][0], citations[0][0], affiliation])
+        if a[1][0]==',':
+            pass
+            # return_list.append([a[0], a[1][1:], fos, no_papers[0][0], citations[0][0], affiliation])
+        else:
+            return_list.append([a[0], a[1], fos, no_papers[0][0], citations[0][0], affiliation])
     return return_list
 
 
 @app.route('/author_all', methods = ['GET'])
 def get_all_authors():
     cursor = db.cursor()
-    # execute SQL query using execute() method.
-    cursor.execute('SELECT * FROM AuthorTable')
-    all_authors = cursor.fetchall()
+
+
+    sort_convention = request.args.get("sort", type=str, default="random")
+    print(sort_convention)
+
+    if sort_convention == 'Citation Count':
+        cursor.execute('CALL sort_authors_by_citations()')
+        all_authors = cursor.fetchall()
+    elif sort_convention == 'A-Z':
+        cursor.execute('CALL sort_authors_alphabetically()')
+        all_authors = cursor.fetchall()
+    elif sort_convention == 'Paper Count':
+        cursor.execute('CALL sort_authors_by_paper_count()')
+        all_authors = cursor.fetchall()
+    else:
+        cursor.execute('SELECT * FROM AuthorTable')
+        all_authors = cursor.fetchall()
+    
     cursor.close()
 
     total = len(all_authors)
@@ -35,7 +53,7 @@ def get_all_authors():
     page = request.args.get(get_page_parameter(), type=int, default=1)
     
     pagination_data = all_author_pagination(all_authors, offset=page, per_page=20)
-    pagination = Pagination(page=page, total=total, css_framework='bootstrap4')
+    pagination = Pagination(page=page, total=total, css_framework='bootstrap4',display_msg='''Showing <b>{start} - {end}</b> {record_name} from <b>{total}</b> entries''')
 
     return render_template('authorsAll.html', data_authors=pagination_data,
                            page=page,

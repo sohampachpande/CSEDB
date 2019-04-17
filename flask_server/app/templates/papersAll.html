@@ -1,44 +1,54 @@
 <html>
-	{% include 'head.html' %}
-	
-    <body>
+        {% include 'head.html' %}
 
+    <body>
         {% include 'navbar.html' %}
 
         <section>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-2 author-letters card sticky-top" >
-                    	<h5 style="margin-top: 50px">All Paper Options</h5>
-                        <div class="links-auth">
-                            <p>All Paper Option 1 </p>
-                            <p>All Paper Option 2 </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-10 author-info">
-                        <h2 style="margin-left: 0px; margin-top: 50px">All Papers Page</h2>
-        				<hr>
 
-                        {% for paper in pages %} 
-                        <div class="card bg-light text-dark" style="margin-top:10px; margin-bottom: 10px">
-                            <div class="info" style="margin-left: 20px; margin-top: 10px">
-                                <a href="/paper/{{ paper[0] }}"> {{ paper[1] }} </a>
-                            </div>
-                            <div class="info" style="margin-left: 20px; margin-top: 10px; margin-bottom: 10px">
-                            {% for auth in authors[paper[0]] %}
-                                <a style='margin-left: 20px' href="/author/{{ auth[0] }}"> {{ auth[1] }} </a> 
-                            {% endfor %}
-                            </div>
-                        </div>    
-				        {% endfor %}
+                    <div class="col-lg-10 author-info offset-lg-1">
+                        <h2 style="margin-left: 0px; margin-top: 50px">All papers</h2>
+                        <hr>
+                        {{ pagination.info  }}
+                        {{ pagination.links }}
+
+                        {% for paper in data_papers %} 
+                            <div class="info card bg-light text-dark" style="margin-top: 10px;">
+                                <p style="margin-left: 5px; margin-top: 20px">
+                                <a style="padding-left: 20px" href="/paper/{{ paper[0] }}"> <b class="author-names">{{ paper[1][:] }}   </b>
+                                </a>
+                                {% for conference in paper[3] %}
+                                <a style="align:right; margin-left: 20px;"href="/conference/{{ conference[0] }}"> {{ conference[1]}}-{{ conference[2]}}</a>
+                                {% endfor %}
+                                </p>
+
+                                <p style="margin-left: 20px; margin-bottom: 5px">
+                                {% for author in paper[2] %}
+                                <a style="margin-left: 5px;"href="/author/{{ author[0] }}"> {{ author[1]}}.</a>
+                                {% endfor %}
+                                </p>
+
+
+                                <p style=" margin-left: 25px; margin-bottom: 20px">Citations: {{ paper[5] }} &nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+                                
+
+
+<!--                                 <p style="margin-left: 5px; margin-bottom: 15px">
+                                {% for fos in paper[4] %}
+                                <a class="fancy-a" style="margin-left: 10px;margin-right: 10px; padding:10px;"href="/fos/{{ fos[0] }}"> {{ fos[1]}}</a>
+                                {% endfor %}
+                                </p>  -->                     
+
+                            </div> 
+                        {% endfor %}
                     </div>
                 </div>
             </div>
         </section>
 
-
-<!--         {% for page in pages %} 
-        <p>{{ page[0] }}</p> 
-        {% endfor %} -->
+    {% include 'footerbar.html' %}
     </body>
 </html>

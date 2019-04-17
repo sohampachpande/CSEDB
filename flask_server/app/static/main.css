@@ -59,7 +59,7 @@
 }
 
 .author-names {
-    font-size: 18px;
+    font-size: 22px;
 }
 
 .author-metadata p{
@@ -86,10 +86,11 @@
 }
 
 .fancy-a {
+  font-size: 16px;
   display: inline-flex; 
-  background-color: lightgrey;
+  background-color: #EEEEEE;
   color: black;
-  padding: 10px 15px;
+  padding: 10px 10px;
   position: relative;
   text-decoration: none;
   border-radius: 5px;
@@ -104,3 +105,4 @@
   box-shadow: none;
   top: 5px;
 }
+

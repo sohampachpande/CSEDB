@@ -11,20 +11,29 @@
                     <div class="col-lg-10 author-info offset-lg-1">
                         <h2 style="margin-left: 0px; margin-top: 50px">All Authors</h2>
         				<hr>
-                        {{ pagination.info  }}
-                        {{ pagination.links }}
+                        
+
+                        <form action="/author_all">
+                          Sort by: &nbsp;&nbsp;
+                          <input class="btn btn--sm " name="sort" style="background: #eeeeee;color:black ;" type="submit" value="A-Z">  
+                          <input class="btn btn--sm " name="sort" style="background: #eeeeee;color:black ;" type="submit" value="Paper Count">  
+                          <input class="btn btn--sm " name="sort" style="background: #eeeeee;color:black ;" type="submit" value="Citation Count">  
+                        </form>
+
                         {% for author in data_authors %} 
                             <div class="info card bg-light text-dark" style="margin-top: 10px;">
                                 <a style="padding: 20px" href="/author/{{ author[0] }}"> <b class="author-names">{{ author[1] }}</b>
                                 </a>
                                 <p style="margin-left: 20px; margin-bottom: 0px">Papers: {{ author[3] }} &nbsp;&nbsp;&nbsp;&nbsp; Citations: {{ author[4] }} &nbsp;&nbsp;&nbsp;&nbsp;</p>
 
+                                {% if author[5]|length != 0 %}
                                 <p style="margin-left: 20px; margin-bottom: 5px">
                                 Affiliations:
                                 {% for affiliation in author[5] %}
                                     {{ affiliation[1]}}. 
                                 {% endfor %}
                                 </p>
+                                {% endif %}
 
                                 <p style="margin-left: 5px; margin-bottom: 15px">
                                 {% for fos in author[2] %}
@@ -34,11 +43,17 @@
 
                             </div> 
 				        {% endfor %}
+
+                        <br>
+
+                        {{ pagination.info  }}
+                        <br>
+                        {{ pagination.links }}
                     </div>
                 </div>
             </div>
         </section>
 
-        
+    {% include 'footerbar.html' %}   
     </body>
 </html>

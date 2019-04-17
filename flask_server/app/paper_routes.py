@@ -1,7 +1,30 @@
 from flask import render_template, request, redirect
+from flask_paginate import Pagination, get_page_parameter
 from app import app
 
 from app import db
+
+
+def all_paper_pagination(all_paper,offset, per_page):
+    paper_subset = all_paper[offset: offset + per_page]
+    cursor = db.cursor()
+    return_list = []
+    for a in paper_subset:
+        cursor.execute('CALL author_paper("{}")'.format(a[0]))
+        authors = cursor.fetchall()
+
+        cursor.execute('CALL con_paper("{}")'.format(a[0]))
+        conf = cursor.fetchall()
+
+        cursor.execute('CALL paper_fos("{}")'.format(a[0]))
+        fos = cursor.fetchall()
+
+        cursor.execute('CALL total_citation_count_paper("{}")'.format(a[0]))
+        citation = cursor.fetchall()
+        
+        return_list.append([a[0], a[1], authors, conf, fos, citation[0][0]])
+    return return_list
+
 
 
 # All Papers page
@@ -10,17 +33,21 @@ def get_all_papers():
     cursor = db.cursor()
     # execute SQL query using execute() method.
     cursor.execute('SELECT * FROM PaperTable ')
-    l = cursor.fetchall()
+    all_paper = cursor.fetchall()
 
-    authors_l = {}
-    for id_,name in l:
-        print('\n\n',id_,name)
-        cursor.execute('call author_paper("{}")'.format(id_))
-        authors_l[id_]=cursor.fetchall()
-        print(authors_l[id_])
+    cursor.close()
 
-    return render_template('papersAll.html', pages = l , authors = authors_l)
+    total = len(all_paper)
+    # page, per_page, offset = get_page_args(page_parameter='page',per_page_parameter='per_page')
+    page = request.args.get(get_page_parameter(), type=int, default=1)
+    
+    pagination_data = all_paper_pagination(all_paper, offset=page, per_page=20)
+    pagination = Pagination(page=page, total=total, css_framework='bootstrap4')
 
+    return render_template('papersAll.html', data_papers=pagination_data,
+                           page=page,
+                           pagination=pagination,
+                           )
 
 # Individual paper page
 @app.route('/paper/<paper_id>', methods = ['GET'])
