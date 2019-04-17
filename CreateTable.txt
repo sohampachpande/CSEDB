@@ -48,12 +48,31 @@ CREATE TABLE FieldOfStudy (
 
 ## Weak Relation
 
-DROP TABLE IF EXISTS KeywordsInPaper;
-CREATE TABLE KeywordsInPaper (
-  PaperID VARCHAR(20) NOT NULL,
-  Keyword VARCHAR(500) NOT NULL,
-  CONSTRAINT fk_KeywordsInPaper_PaperTable_PaperID FOREIGN KEY(PaperID) REFERENCES PaperTable(PaperID)
+DROP TABLE IF EXISTS FieldOfStudy;
+CREATE TABLE FieldOfStudy (
+  FieldID VARCHAR(20) NOT NULL,
+  FieldName VARCHAR(500) NOT NULL,
+  CONSTRAINT pk_FieldOfStudy PRIMARY KEY(FieldID)
 );
+
+
+DROP TABLE IF EXISTS KeywordTable;
+CREATE TABLE KeywordTable (
+  KeywordID VARCHAR(20) NOT NULL,
+  Keyword VARCHAR(500) NOT NULL,
+  CONSTRAINT pk_KeywordTable PRIMARY KEY(KeywordID)
+);
+
+DROP TABLE IF EXISTS PaperSummary;
+CREATE TABLE PaperSummary (
+  PaperID VARCHAR(20) NOT NULL,
+  Summary VARCHAR(6000) NOT NULL,
+  CONSTRAINT fk_PaperSummary_PaperTable_PaperID FOREIGN KEY(PaperID) REFERENCES PaperTable(PaperID),
+  PRIMARY KEY(PaperID)
+);
+
+
+
 
 
 ## Relationships
@@ -125,11 +144,52 @@ CREATE TABLE AuthorInterestedInField (
 );
 
 
+DROP TABLE IF EXISTS KeywordsInPaper;
+CREATE TABLE KeywordsInPaper (
+PaperID VARCHAR(20) NOT NULL,
+KeywordID VARCHAR(20) NOT NULL,
+CONSTRAINT fk_KeywordsInPaper_PaperTable_PaperID FOREIGN KEY(PaperID) REFERENCES PaperTable(PaperID),
+CONSTRAINT fk_KeywordsInPaper_KeywordTable_KeywordID FOREIGN KEY(KeywordID) REFERENCES KeywordTable(KeywordID),
+PRIMARY KEY(PaperID, KeywordID)
+);
+
+
+## Views
+
+create view  AuthorID_PaperID_temp as  
+select AuthorID, PaperID 
+from (AuthorTable natural join AuthorWritesPaper natural join PaperTable) ;
 
 
 
+create view PaperID_Year as 
+select  PaperID,ConferenceID,ConferenceYear 
+from (PaperTable natural join PaperPublishedInConference natural join ConferenceTable);
 
 
+create view authorID_sorted_by_Paper_Count as 
+select AuthorID,count(PaperID) as Paper_count 
+from AuthorID_PaperID_temp 
+group by AuthorID  
+order by count(PaperID) desc ;
 
 
+create view authorID_sorted_by_citations as 
+select AuthorID , count(Paper1ID) as citation_count
+from AuthorID_PaperID_temp, Paper1CitesPaper2 
+where PaperID = Paper2ID 
+group by AuthorID 
+order by count(Paper1ID) desc ;
 
+
+create view paperID_sorted_by_citations as 
+select Paper2ID,count(Paper1ID) as citation_count 
+from Paper1CitesPaper2 
+group by Paper2ID 
+order by count(Paper1ID) desc ;
+
+create view paperID_sorted_by_references as 
+select Paper1ID,count(Paper2ID) as citation_count 
+from Paper1CitesPaper2 
+group by Paper1ID 
+order by count(Paper2ID) desc ;
