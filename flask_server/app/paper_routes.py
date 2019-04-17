@@ -39,10 +39,10 @@ def individual_paper_page(paper_id):
     cursor.execute('call author_paper("{}")'.format(paper_id))
     authors = cursor.fetchall()
    
-    cursor.execute('call citation("{}")'.format(paper_id))
+    cursor.execute('call references_of_this_paper("{}")'.format(paper_id))
     references = cursor.fetchall()
 
-    cursor.execute('call refers("{}")'.format(paper_id))
+    cursor.execute('call this_paper_cited_by("{}")'.format(paper_id))
     papers_cite_this = cursor.fetchall()
 
     print(papers_cite_this)

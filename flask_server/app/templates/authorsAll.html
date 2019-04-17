@@ -7,27 +7,32 @@
         <section>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-2 author-letters card sticky-top" >
-                    	<h5 style="margin-top: 50px">All Authors Initials</h5>
-                        <div class="letters">
-                            <!-- <p>a</p>
-                            <p>b</p>
-                            <p>c</p>
-                            <p>d</p> -->
-                            <a href="/author_all/a">a</a><br>
-                            <a href="/author_all/b">b</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-10 author-info">
-                        <h2 style="margin-left: 0px; margin-top: 50px">All Authors page</h2>
-        				<hr>
 
-                        {% for author in authors %} 
-                        <div class="card bg-light text-dark" style="margin-top:10px;">
-                            <div class="info" style="padding: 20px;">
-                                <a href="/author/{{ author[0] }}"> {{ author[1] }} </a>
-                            </div>
-                        </div>    
+                    <div class="col-lg-10 author-info offset-lg-1">
+                        <h2 style="margin-left: 0px; margin-top: 50px">All Authors</h2>
+        				<hr>
+                        {{ pagination.info  }}
+                        {{ pagination.links }}
+                        {% for author in data_authors %} 
+                            <div class="info card bg-light text-dark" style="margin-top: 10px;">
+                                <a style="padding: 20px" href="/author/{{ author[0] }}"> <b class="author-names">{{ author[1] }}</b>
+                                </a>
+                                <p style="margin-left: 20px; margin-bottom: 0px">Papers: {{ author[3] }} &nbsp;&nbsp;&nbsp;&nbsp; Citations: {{ author[4] }} &nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+                                <p style="margin-left: 20px; margin-bottom: 5px">
+                                Affiliations:
+                                {% for affiliation in author[5] %}
+                                    {{ affiliation[1]}}. 
+                                {% endfor %}
+                                </p>
+
+                                <p style="margin-left: 5px; margin-bottom: 15px">
+                                {% for fos in author[2] %}
+                                <a class="fancy-a" style="margin-left: 10px;margin-right: 10px; padding:10px;"href="/fos/{{ fos[0] }}"> {{ fos[1]}}</a>
+                                {% endfor %}
+                                </p>
+
+                            </div> 
 				        {% endfor %}
                     </div>
                 </div>

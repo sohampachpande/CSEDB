@@ -50,7 +50,7 @@
 
                         {% if papers_cite_this|length!=0 %}
                         <div style="padding-top: 40px; padding-bottom: 200px">
-                            <h4> Papers which site the following paper :-</h4>
+                            <h4> Papers which cite the following paper :-</h4>
                             {% for paper in papers_cite_this %}
                                 <li><a href="/paper/{{ paper[0] }}">{{ paper[1] }}</a></li>
                             {% endfor %}

@@ -84,3 +84,23 @@
 .author-indi{
     padding: 20px;
 }
+
+.fancy-a {
+  display: inline-flex; 
+  background-color: lightgrey;
+  color: black;
+  padding: 10px 15px;
+  position: relative;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.fancy-a:hover {
+  background-color: grey;
+  cursor: pointer;
+}
+
+.fancy-a:active {
+  box-shadow: none;
+  top: 5px;
+}
