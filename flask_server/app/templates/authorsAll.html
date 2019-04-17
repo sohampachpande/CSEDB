@@ -26,9 +26,9 @@
 
                                 {% if author[5]|length != 0 %}
                                 <p style="margin-left: 20px; margin-bottom: 5px">
-                                Affiliations:
+                                <!-- Affiliations: -->
                                 {% for affiliation in author[5] %}
-                                    {{ affiliation[1]}}. 
+                                    <p style="margin-left: 24px; margin-bottom: 0px"><i class="fas fa-university"></i> {{ affiliation[1]}}</p> 
                                 {% endfor %}
                                 </p>
                                 {% endif %}
@@ -52,6 +52,7 @@
             </div>
         </section>
 
+    <br>
     {% include 'footerbar.html' %}   
     </body>
 </html>

@@ -46,6 +46,8 @@
 
                         <div class="tab-content">
                             <div id="home" class="container tab-pane active" style="margin-left: 0px"><br>
+                                {{ pagination_paper.info  }}
+                                {{ pagination_paper.links }}
                                 {% for paper in papers %} 
                                     <div class="info" >
                                         <a href="/paper/{{ paper[0] }}">{{ paper[1] }}</a>
@@ -54,6 +56,8 @@
                                 {% endfor %}
                             </div>
                             <div id="menu1" class="container tab-pane fade" style="margin-left: 0px"><br>
+                                {{ pagination_author.info  }}
+                                {{ pagination_author.links }}
                                 {% for author in authors %} 
                                     <div class="info" >
                                         <a href="/author/{{ author[0] }}">{{ author[1] }}</a>
@@ -76,6 +80,8 @@
             </div>
         </section>
 
+    <br>
+    {% include 'footerbar.html' %}
     </body>
 
 </html>
