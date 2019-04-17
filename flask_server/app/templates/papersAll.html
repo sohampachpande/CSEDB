@@ -20,19 +20,26 @@
                                 <p style="margin-left: 5px; margin-top: 20px">
                                 <a style="padding-left: 20px" href="/paper/{{ paper[0] }}"> <b class="author-names">{{ paper[1][:] }}   </b>
                                 </a>
-                                {% for conference in paper[3] %}
+                                <!-- {% for conference in paper[3] %}
                                 <a style="align:right; margin-left: 20px;"href="/conference/{{ conference[0] }}"> {{ conference[1]}}-{{ conference[2]}}</a>
-                                {% endfor %}
+                                {% endfor %} -->
                                 </p>
 
-                                <p style="margin-left: 20px; margin-bottom: 5px">
+
+                                <p style="margin-left: 20px; margin-bottom: 10px;margin-top: -20px">
                                 {% for author in paper[2] %}
                                 <a style="margin-left: 5px;"href="/author/{{ author[0] }}"> {{ author[1]}}.</a>
                                 {% endfor %}
                                 </p>
 
+                                <p>{% for conference in paper[3] %}
+                                <a style="align:right; margin-left: 25px; margin-top: 50px"href="/conference/{{ conference[0] }}"> {{ conference[1]}}-{{ conference[2]}}</a>
+                                {% endfor %}
+                                </p>
+                    
 
-                                <p style=" margin-left: 25px; margin-bottom: 20px">Citations: {{ paper[5] }} &nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+                                <p style=" margin-left: 25px; margin-bottom: 20px;margin-top: -15px">Citations: {{ paper[5] }} &nbsp;&nbsp;&nbsp;&nbsp;</p>
 
                                 
 
@@ -54,7 +61,6 @@
             </div>
         </section>
 
-    <br>
     {% include 'footerbar.html' %}
     </body>
 </html>

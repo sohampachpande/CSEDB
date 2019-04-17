@@ -20,20 +20,22 @@
 
                         {% for author in data_authors %} 
                             <div class="info card bg-light text-dark" style="margin-top: 10px;">
-                                <a style="padding: 20px" href="/author/{{ author[0] }}"> <b class="author-names">{{ author[1] }}</b>
+                                <a style="padding: 20px; margin-bottom: -10px;" href="/author/{{ author[0] }}"> <b class="author-names">{{ author[1] }}</b>
                                 </a>
-                                <p style="margin-left: 20px; margin-bottom: 0px">Papers: {{ author[3] }} &nbsp;&nbsp;&nbsp;&nbsp; Citations: {{ author[4] }} &nbsp;&nbsp;&nbsp;&nbsp;</p>
 
-                                {% if author[5]|length != 0 %}
-                                <p style="margin-left: 20px; margin-bottom: 5px">
+                                 {% if author[5]|length != 0 %}
+                                <p style="margin-left: 30px; margin-bottom: 5px;margin-top: -10px;">
                                 <!-- Affiliations: -->
                                 {% for affiliation in author[5] %}
-                                    <p style="margin-left: 24px; margin-bottom: 0px"><i class="fas fa-university"></i> {{ affiliation[1]}}</p> 
+                                    <p style="margin-left: 40px; margin-bottom: 0px"><i class="fas fa-university"></i> {{ affiliation[1]}}</p> 
                                 {% endfor %}
                                 </p>
                                 {% endif %}
 
-                                <p style="margin-left: 5px; margin-bottom: 15px">
+                                <p style="margin-left: 25px; margin-bottom: 5px">Papers: {{ author[3] }} &nbsp;&nbsp;&nbsp;&nbsp; Citations: {{ author[4] }} &nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+
+                                <p style="margin-left: 10px; margin-bottom: 15px">
                                 {% for fos in author[2] %}
                                 <a class="fancy-a" style="margin-left: 10px;margin-right: 10px; padding:10px;"href="/fos/{{ fos[0] }}"> {{ fos[1]}}</a>
                                 {% endfor %}

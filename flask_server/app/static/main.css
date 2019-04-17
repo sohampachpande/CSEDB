@@ -97,7 +97,7 @@
 }
 
 .fancy-a:hover {
-  background-color: grey;
+  background-color: transparent;
   cursor: pointer;
 }
 
