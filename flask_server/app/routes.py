@@ -19,3 +19,8 @@ def index():
     # Todo : Make search
     
     return render_template('index.html', title='CSE DB', user=user)
+
+
+@app.route('/cite_net')
+def cite_net():
+    return render_template('cite_net.html')

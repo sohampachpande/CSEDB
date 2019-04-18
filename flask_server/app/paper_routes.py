@@ -88,6 +88,6 @@ def individual_paper_page(paper_id):
     for year,c in year_paper:
         x.append(year)
         y.append(c)
-    print(x,y)
+    # print(x,y)
 
     return render_template('paper_temp.html', paper=papers[0], conferences = confs, authors = authors, references = references, papers_cite_this = papers_cite_this, x=x, y=y)

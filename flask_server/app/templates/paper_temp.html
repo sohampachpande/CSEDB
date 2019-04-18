@@ -7,7 +7,7 @@
         <section>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-10 author-info offset-lg-1" style="padding-left: 60px;">
+                    <div class="col-lg-6 author-info offset-lg-1" style="padding-left: 60px;">
                         <h2 style="margin-left: 0px; margin-top: 50px; margin-left: -20px;">{{paper[1]}}</h2>
                         <br><br>
 
@@ -63,6 +63,10 @@
                             </div>
                         </div>
 
+                        
+                        
+                    </div>
+                    <div class="col-lg-5" style="margin-top: 100px" id="plot">
                         <h4 style="margin:20px">Distribution of Citations over time</h4>
                         <div id="myDiv"></div> 
                     </div>
@@ -95,9 +99,16 @@
               title: 'Distribution of Citations over time',
               xaxis: {range: [1965, 2015]}
             };
-            var l = stringArr("{{ x }}")
-            console.log(l);
-            Plotly.newPlot('myDiv', data, {}, {showSendToCloud: true});
+
+
+            if (data[0].x.length < 2 ){
+                plt = document.getElementById('plot')
+                plt.style.display = "none"
+                console.log(7)
+            }
+            else {
+                Plotly.newPlot('myDiv', data, {}, {showSendToCloud: true});
+            }
         </script>
 
         <br>
