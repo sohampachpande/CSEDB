@@ -37,5 +37,38 @@ def get_conf_individual(conf_id):
     cursor.execute('CALL conference_AuthorNames("{}")'.format(conf_id))
     authors = cursor.fetchall()
 
+    cursor.execute(' CALL ConferenceName_PaperDistribution("{}")'.format(conf_details[0][1]))
+    conf_paper_count = cursor.fetchall()
+
+    conf_paper_count_years = list()
+    conf_paper_count_c = list()
+    for i in conf_paper_count:
+        conf_paper_count_c.append(i[1])
+        conf_paper_count_years.append(i[0])
+
+    cursor.execute(' CALL ConferenceName_CitationDistribution("{}")'.format(conf_details[0][1]))
+    conf_cite_count = cursor.fetchall()
+
+
+    conf_cite_count_years = list()
+    conf_cite_count_c = list()
+
+    for i in conf_cite_count:
+        conf_cite_count_c.append(i[1])
+        conf_cite_count_years.append(i[0])
+
+    # print()
+
     cursor.close()
-    return render_template('conf_temp.html', conf = conf_details[0], fos=fos, papers=papers, authors=authors, no_authors = len(authors), no_papers=len(papers))
+    return render_template(
+        'conf_temp.html',
+        conf = conf_details[0],
+        fos=fos,
+        papers=papers,
+        authors=authors,
+        no_authors = len(authors),
+        no_papers=len(papers),
+        conf_paper_count_c = conf_paper_count_c,
+        conf_paper_count_years = conf_paper_count_years,
+        conf_cite_count_c = list(map(int, conf_cite_count_c)),
+        conf_cite_count_years = conf_cite_count_years)

@@ -81,11 +81,39 @@ def get_author_page(author_id):
     a_coauth = cursor.fetchall()
 
 
-    y = [ 1, 3, 6,8 , 9, 0]
-    x =  [1 , 2 , 3.5 , 4 , 5 , 6]
+    cursor.execute(' CALL  Author_PaperDistribution("{}")'.format(author_id))
+    author_paper_count = cursor.fetchall()
+
+    author_paper_count_years = list()
+    author_paper_count_c = list()
+    for i in author_paper_count:
+        author_paper_count_c.append(i[1])
+        author_paper_count_years.append(i[0])
+
+
+
+    cursor.execute(' CALL Author_CitationDistribution("{}")'.format(author_id))
+    author_cite_count = cursor.fetchall()
+
+
+    author_cite_count_years = list()
+    author_cite_count_c = list()
+
+    for i in author_cite_count:
+        author_cite_count_c.append(i[1])
+        author_cite_count_years.append(i[0])
 
     cursor.close()
-    return render_template('author_temp.html', author=l[0], auth_field=a_field, auth_conference=a_conf, auth_papers=a_papers, auth_coauth = a_coauth, x=x, y=y)
+    return render_template('author_temp.html',
+        author=l[0],
+        auth_field=a_field,
+        auth_conference=a_conf,
+        auth_papers=a_papers,
+        auth_coauth = a_coauth,
+        author_paper_count_c = author_paper_count_c,
+        author_paper_count_years = author_paper_count_years,
+        author_cite_count_c = author_cite_count_c,
+        author_cite_count_years = author_cite_count_years)
 
 
 # @app.route('/author/<author_id>/papers', methods = ['GET'])

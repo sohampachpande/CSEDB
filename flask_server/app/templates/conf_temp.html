@@ -7,7 +7,7 @@
         <section>
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-10 author-info offset-lg-1" style="padding-left: 60px;">
+                    <div class="col-lg-6 author-info offset-lg-1" style="padding-left: 60px;">
                         <h2 style="margin-left: 0px; margin-top: 50px; margin-left: -20px;">{{conf[1]}} - {{conf[2]}}</h2>
                         <br><br>
 
@@ -73,6 +73,12 @@
                         <!-- <div id="myDiv"></div>  -->
 
                     </div>
+                    <div class="col-lg-5" style="margin-top: 100px;">
+                         <div id="paper-year"></div> 
+
+
+                         <div id="cite-year"></div> 
+                    </div>
                 </div>
             </div>
         </section>
@@ -93,15 +99,120 @@
             // console.log("{{ y }}")
             var data = [
                 {
-                    x: stringArr("{{ x }}"),
-                    y: stringArr("{{ y }}"),
+                    x: stringArr("{{ conf_paper_count_years }}"),
+                    y: stringArr("{{ conf_paper_count_c }}"),
+                    marker: {
+                        color : []
+                    } ,
                     type: 'bar'
+                   
                 }
             ];
+
+            data[0].marker.color = data[0].x.map(function (v) {
+                return v == Number("{{ conf[2] }}") ? '#FFD500' : '#00AAFF'
+            });
+
+
+            var layout = {
+                width: 500,
+                height: 500,
+                title: {
+                    text:'Paper distribution over the years',
+                    font: {
+                    family: 'Courier New, monospace',
+                    size: 20
+                    },
+                    xref: 'paper',
+                },
+                xaxis: {
+                    title: {
+                    text: 'Year',
+                    font: {
+                        family: 'Courier New, monospace',
+                        size: 18,
+                        color: '#7f7f7f'
+                    }
+                    },
+                },
+                yaxis: {
+                    title: {
+                    text: 'Paper count',
+                    font: {
+                        family: 'Courier New, monospace',
+                        size: 18,
+                        color: '#7f7f7f'
+                    }
+                    }
+                }
+            };
+
+
             var l = stringArr("{{ x }}")
             console.log(l);
-            Plotly.newPlot('myDiv', data, {}, {showSendToCloud: true});
+            Plotly.newPlot('paper-year', data, layout, {showSendToCloud: true});
         </script>
+
+
+
+<script>
+        // console.log("{{ x }}");
+        // console.log("{{ y }}")
+        var data = [
+            {
+                x: stringArr("{{ conf_cite_count_years }}"),
+                y: stringArr("{{ conf_cite_count_c }}"),
+                marker: {
+                    color : []
+                } ,
+                type: 'bar'
+               
+            }
+        ];
+
+        data[0].marker.color = data[0].x.map(function (v) {
+            return v == Number("{{ conf[2] }}") ? '#FFD500' : '#00AAFF'
+        });
+
+
+        var layout = {
+            width: 500,
+            height: 500,
+            title: {
+                text:'Citation distribution over the years',
+                font: {
+                family: 'Courier New, monospace',
+                size: 20
+                },
+                xref: 'paper',
+            },
+            xaxis: {
+                title: {
+                text: 'Year',
+                font: {
+                    family: 'Courier New, monospace',
+                    size: 18,
+                    color: '#7f7f7f'
+                }
+                },
+            },
+            yaxis: {
+                title: {
+                text: 'Citation count',
+                font: {
+                    family: 'Courier New, monospace',
+                    size: 18,
+                    color: '#7f7f7f'
+                }
+                }
+            }
+        };
+
+
+        var l = stringArr("{{ x }}")
+        console.log(l);
+        Plotly.newPlot('cite-year', data, layout, {showSendToCloud: true});
+    </script>
 
         <br>
         {% include 'footerbar.html' %}
