@@ -21,6 +21,20 @@ def index():
     return render_template('index.html', title='CSE DB', user=user)
 
 
-@app.route('/cite_net')
+@app.route('/add')
 def cite_net():
-    return render_template('cite_net.html')
+    user = {'username': 'Soham'}
+    return render_template('mods.html', title='CSE DB', user=user)
+
+
+@app.route('/submit', methods = ['POST'])
+def submit():
+    paper = request.form.get("paper")
+    keywords = request.form.get("keywords")
+    authors = request.form.get("authors")
+    conferences = request.form.get("conferences")
+    fos = request.form.get("fos")
+
+    keywords_list = keywords.split(",")
+    conferences_list = conferences.split(",")
+    return "submitted successfully"
