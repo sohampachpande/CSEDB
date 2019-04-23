@@ -46,30 +46,31 @@
 
                         <div class="tab-content">
                             <div id="home" class="container tab-pane active" style="margin-left: 0px"><br>
-                                {{ pagination_paper.info  }}
-                                {{ pagination_paper.links }}
+                                <input type="text" id="myInput2" onkeyup="myFunction2()" placeholder="Search by Paper..." title="Type in a name" style="padding:10px; width:300px; margin-bottom: 20px;">
                                 {% for paper in papers %} 
-                                    <div class="info" >
+                                    <div class="info papers" style="padding: 5px;">
                                         <a href="/paper/{{ paper[0] }}">{{ paper[1] }}</a>
+                                        <br>  
                                     </div>
-                                    <br>  
                                 {% endfor %}
                             </div>
                             <div id="menu1" class="container tab-pane fade" style="margin-left: 0px"><br>
-                                {{ pagination_author.info  }}
-                                {{ pagination_author.links }}
+                                <input type="text" id="myInput1" onkeyup="myFunction1()" placeholder="Search by Author..." title="Type in a name" style="padding:10px; width:300px; margin-bottom: 20px;">
                                 {% for author in authors %} 
-                                    <div class="info" >
+                                    <div class="info authors" style="padding: 5px;">
                                         <a href="/author/{{ author[0] }}">{{ author[1] }}</a>
+                                        <br>  
                                     </div>
-                                    <br>  
                                 {% endfor %}
                             </div>
                             <div id="menu2" class="container tab-pane fade" style="margin-left: 0px"><br>
                                 {% for conf in conferences %} 
                                     <div class="info" >
-                                        <a href="/conference/{{ conf[0] }}">{{ conf[1] }} - {{ conf[2] }}</a>
+                                        <a href="/conference/{{ conf[0] }}">{{ conf[0] }}</a>
                                     </div>
+                                    {% for year in conf[1] %}
+                                    <a href="/conference/{{ year[1] }}"><button type="button" class="btn btn-light" style="padding: 10px; margin-top:10px;">{{ year[0] }}</button></a>
+                                    {% endfor %}
                                     <br>  
                                 {% endfor %}
                             </div>
@@ -84,4 +85,48 @@
     {% include 'footerbar.html' %}
     </body>
 
+
+
+        <script>
+            function myFunction1() {
+                var input, filter, conference_boxes;
+                input = document.getElementById("myInput1");
+                filter = input.value.toUpperCase();
+                author_boxes = document.getElementsByClassName("authors")
+                // console.log(author_boxes);
+                for (i = 0; i < author_boxes.length; i++) {
+                    t = author_boxes[i];
+                    txtValue = t.textContent || t.innerText;
+                    console.log("a");
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        t.style.display = "";
+                    } 
+                    else {
+                        t.style.display = "none";
+                    }    
+                }
+            }
+        </script>
+
+
+        <script>
+            function myFunction2() {
+                var input, filter, conference_boxes;
+                input = document.getElementById("myInput2");
+                filter = input.value.toUpperCase();
+                author_boxes = document.getElementsByClassName("papers")
+                // console.log(author_boxes);
+                for (i = 0; i < author_boxes.length; i++) {
+                    t = author_boxes[i];
+                    txtValue = t.textContent || t.innerText;
+                    console.log("a");
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        t.style.display = "";
+                    } 
+                    else {
+                        t.style.display = "none";
+                    }    
+                }
+            }
+        </script>
 </html>

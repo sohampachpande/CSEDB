@@ -35,12 +35,22 @@ def get_fos_papers(fos_id):
     total_papers = len(papers)
     total_authors = len(authors)
     # page, per_page, offset = get_page_args(page_parameter='page',per_page_parameter='per_page')
-    page = request.args.get(get_page_parameter(), type=int, default=1)
+    # page = request.args.get(get_page_parameter(), type=int, default=1)
     
-    pagination_paper = all_paper_pagination(papers, offset=page, per_page=20)
-    paginationpaper = Pagination(page=page, total=total_papers, css_framework='bootstrap4',display_msg='''Showing <b>{start} - {end}</b> {record_name} from <b>{total}</b> entries''')
+    # pagination_paper = all_paper_pagination(papers, offset=page, per_page=20)
+    # paginationpaper = Pagination(page=page, total=total_papers, css_framework='bootstrap4',display_msg='''Showing <b>{start} - {end}</b> {record_name} from <b>{total}</b> entries''')
 
-    pagination_author = all_paper_pagination(authors, offset=page, per_page=20)
-    paginationauthor = Pagination(page=page, total=total_authors, css_framework='bootstrap4',display_msg='''Showing <b>{start} - {end}</b> {record_name} from <b>{total}</b> entries''')
+    # pagination_author = all_paper_pagination(authors, offset=page, per_page=20)
+    # paginationauthor = Pagination(page=page, total=total_authors, css_framework='bootstrap4',display_msg='''Showing <b>{start} - {end}</b> {record_name} from <b>{total}</b> entries''')
 
-    return render_template('fos_temp.html', fos_list = fos_list,  papers = papers, authors = authors, conferences = conferences, fos_id = fos_id,page=page, pagination_author=pagination_author,pagination_paper= pagination_paper)
+    confs = list()
+    d = dict()
+    for i in conferences:
+        try:
+            d[i[1]].append((int(i[2]), i[0]))
+        except:
+            d[i[1]] = [(int(i[2]), i[0])]
+    for i in list(d.keys()):
+        confs.append((i, sorted(d[i], key=lambda x: x[0])))
+
+    return render_template('fos_temp.html', fos_list = fos_list,  papers = papers, authors = authors, conferences = confs, fos_id = fos_id,  )
