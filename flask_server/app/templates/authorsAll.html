@@ -13,9 +13,37 @@
 
                         <form action="/author_all">
                           Sort by: &nbsp;&nbsp;
-                          <input class="btn btn--sm " name="sort" style="background: #eeeeee;color:black ;" type="submit" value="A-Z">  
-                          <input class="btn btn--sm " name="sort" style="background: #eeeeee;color:black ;" type="submit" value="Paper Count">  
-                          <input class="btn btn--sm " name="sort" style="background: #eeeeee;color:black ;" type="submit" value="Citation Count">  
+                          {% if sort_id == 'A-Z' %}
+                            <input class="btn btn-light active" name="sort" type="submit" value="A-Z">  
+                          {%else%}
+                            <input class="btn btn-light " name="sort" type="submit" value="A-Z">
+                          {%endif%}
+
+                          {% if sort_id == "Paper Count" %}
+                            <input class="btn btn-light active" name="sort" type="submit" value="Paper Count">  
+                          {%else%}
+                            <input class="btn btn-light " name="sort" type="submit" value="Paper Count">
+                          {%endif%}
+
+                          {% if sort_id == "Citation Count" %}
+                            <input class="btn btn-light active" name="sort" type="submit" value="Citation Count">  
+                          {%else%}
+                            <input class="btn btn-light " name="sort" type="submit" value="Citation Count">
+                          {%endif%}
+                        </form>
+
+
+                        <form>
+                        Select Field of Study: <br>
+                        {% for fos in fos_list %} 
+                        {% if fos[0] == fos_id %}
+                        <input class="btn btn-light active" style="padding: 5px; margin-bottom: 5px" name="selectFOS" type="submit" 
+                        value="{{fos[1]}}"> 
+                        {% else %}
+                        <input class="btn btn-light" style="padding: 5px; margin-bottom: 5px" name="selectFOS" type="submit" 
+                        value="{{ fos[1] }}"> 
+                        {% endif %}
+                        {% endfor %}
                         </form>
 
                         {% for author in data_authors %} 

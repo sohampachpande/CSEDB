@@ -1,8 +1,15 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
 from flask_paginate import Pagination, get_page_parameter
 from app import app
 
 from app import db
+
+# session['selectFOS'] = 'All'
+# session['sort_convention'] = 'random' 
+
+fos_list = [['All', 'All'],['F-0', 'Error Correction and Code-Switching'], ['F-1', 'Word Segmentation'], ['F-2', 'Natural Language Processing'], ['F-3', 'Computational Linguitics on Twitter'], ['F-4', 'Dialogue and Discourse'], ['F-5', 'Sentiment Analysis'], ['F-6', 'Speech Recognition'], ['F-7', 'Information Extraction'], ['F-8', 'Word-Sense Disambiguation'], ['F-9', 'Lexical Acquisition'], ['F-10', 'Machine Translation'], ['F-11', 'Semantic Similarity'], ['F-12', 'Dependency Parsing'], ['F-13', 'Language Annotation'], ['F-14', 'Multilingual NLP']]
+fos_dict = {'All': 'All', 'Error Correction and Code-Switching': 'F-0', 'Word Segmentation': 'F-1', 'Natural Language Processing': 'F-2', 'Computational Linguitics on Twitter': 'F-3', 'Dialogue and Discourse': 'F-4', 'Sentiment Analysis': 'F-5', 'Speech Recognition': 'F-6', 'Information Extraction': 'F-7', 'Word-Sense Disambiguation': 'F-8', 'Lexical Acquisition': 'F-9', 'Machine Translation': 'F-10', 'Semantic Similarity': 'F-11', 'Dependency Parsing': 'F-12', 'Language Annotation': 'F-13', 'Multilingual NLP': 'F-14'}
+
 
 def all_author_pagination(all_authors,offset, per_page):
     auth_subset = all_authors[offset: offset + per_page]
@@ -48,23 +55,60 @@ def get_paper_all_info(papers_list):
 
 @app.route('/author_all', methods = ['GET'])
 def get_all_authors():
+
+    # session.clear()
     cursor = db.cursor()
 
+    selectFOS = 'All'
+    sort_convention = 'random'
 
-    sort_convention = request.args.get("sort", type=str, default="random")
+    if 'selectFOS' in request.args:
+        selectFOS = request.args.get("selectFOS", type=str, default="All")
+        session['selectFOS'] = selectFOS
 
-    if sort_convention == 'Citation Count':
-        cursor.execute('CALL sort_authors_by_citations()')
-        all_authors = cursor.fetchall()
-    elif sort_convention == 'A-Z':
-        cursor.execute('CALL sort_authors_alphabetically()')
-        all_authors = cursor.fetchall()
-    elif sort_convention == 'Paper Count':
-        cursor.execute('CALL sort_authors_by_paper_count()')
-        all_authors = cursor.fetchall()
     else:
-        cursor.execute('SELECT * FROM AuthorTable')
-        all_authors = cursor.fetchall()
+        if 'selectFOS' in session:
+            selectFOS = session['selectFOS']
+        else:
+            session['selectFOS'] = selectFOS
+        
+    if 'sort' in request.args:
+        sort_convention = request.args.get("sort", type=str, default="random")
+        session['sort_convention'] = sort_convention
+        
+    else:
+        if 'sort_convention' in session:
+            sort_convention = session['sort_convention'] 
+        else:
+            session['sort_convention'] = sort_convention
+
+    print("\n\n", selectFOS=='All', sort_convention,"\n\n")
+    if selectFOS == 'All':
+        if sort_convention == 'Citation Count':
+            cursor.execute('CALL sort_authors_by_citations()')
+            all_authors = cursor.fetchall()
+        elif sort_convention == 'A-Z':
+            cursor.execute('CALL sort_authors_alphabetically()')
+            all_authors = cursor.fetchall()
+        elif sort_convention == 'Paper Count':
+            cursor.execute('CALL sort_authors_by_paper_count()')
+            all_authors = cursor.fetchall()
+        else:
+            cursor.execute('SELECT * FROM AuthorTable')
+            all_authors = cursor.fetchall()
+    else:
+        if sort_convention == 'Citation Count':
+            cursor.execute('CALL FOS_Author_sorted_by_citations("{}")'.format(fos_dict[selectFOS]))
+            all_authors = cursor.fetchall()
+        elif sort_convention == 'A-Z':
+            cursor.execute('CALL FOS_Author_sorted_alphabetically("{}")'.format(fos_dict[selectFOS]))
+            all_authors = cursor.fetchall()
+        elif sort_convention == 'Paper Count':
+            cursor.execute('CALL FOS_Author_sorted_by_paper_count("{}")'.format(fos_dict[selectFOS]))
+            all_authors = cursor.fetchall()
+        else:
+            cursor.execute('CALL FOS_Author_sorted_alphabetically("{}")'.format(fos_dict[selectFOS]))
+            all_authors = cursor.fetchall()
     
     cursor.close()
 
@@ -78,6 +122,9 @@ def get_all_authors():
     return render_template('authorsAll.html', data_authors=pagination_data,
                            page=page,
                            pagination=pagination,
+                           fos_list = fos_list,
+                           fos_id = fos_dict[selectFOS],
+                           sort_id = sort_convention
                            )
 
 
