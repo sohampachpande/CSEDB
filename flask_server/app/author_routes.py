@@ -25,6 +25,27 @@ def all_author_pagination(all_authors,offset, per_page):
     return return_list
 
 
+def get_paper_all_info(papers_list):
+    cursor = db.cursor()
+    return_list = []
+    for a in papers_list:
+        cursor.execute('CALL author_paper("{}")'.format(a[0]))
+        authors = cursor.fetchall()
+
+        cursor.execute('CALL con_paper("{}")'.format(a[0]))
+        conf = cursor.fetchall()
+
+        cursor.execute('CALL paper_fos("{}")'.format(a[0]))
+        fos = cursor.fetchall()
+
+        cursor.execute('CALL total_citation_count_paper("{}")'.format(a[0]))
+        citation = cursor.fetchall()
+        
+        return_list.append([a[0], a[1], authors, conf, fos, citation[0][0]])
+
+    return return_list
+
+
 @app.route('/author_all', methods = ['GET'])
 def get_all_authors():
     cursor = db.cursor()
@@ -68,6 +89,9 @@ def get_author_page(author_id):
     cursor.execute('SELECT * FROM AuthorTable WHERE  AuthorID = "{}"'.format(author_id))
     l = cursor.fetchall()
 
+    cursor.execute('call Number_of_citations_of_author("{}")'.format(author_id))
+    a_count_citations = cursor.fetchall()
+
     cursor.execute('call FOS("{}")'.format(author_id))
     a_field = cursor.fetchall()
 
@@ -75,7 +99,9 @@ def get_author_page(author_id):
     a_conf = cursor.fetchall()
 
     cursor.execute('call aut_paper("{}")'.format(author_id))
-    a_papers = cursor.fetchall()
+    papers_list = cursor.fetchall()
+
+    a_papers = get_paper_all_info(papers_list)
 
     cursor.execute('call coauthor("{}")'.format(author_id))
     a_coauth = cursor.fetchall()
@@ -91,7 +117,6 @@ def get_author_page(author_id):
         author_paper_count_years.append(i[0])
 
 
-
     cursor.execute(' CALL Author_CitationDistribution("{}")'.format(author_id))
     author_cite_count = cursor.fetchall()
 
@@ -103,17 +128,29 @@ def get_author_page(author_id):
         author_cite_count_c.append(i[1])
         author_cite_count_years.append(i[0])
 
+    confs = list()
+    d = dict()
+    for i in a_conf:
+        try:
+            d[i[1]].append((int(i[2]), i[0]))
+        except:
+            d[i[1]] = [(int(i[2]), i[0])]
+    for i in list(d.keys()):
+        confs.append((i, sorted(d[i], key=lambda x: x[0])))
+
+
     cursor.close()
     return render_template('author_temp.html',
         author=l[0],
         auth_field=a_field,
-        auth_conference=a_conf,
+        auth_conference=confs,
         auth_papers=a_papers,
         auth_coauth = a_coauth,
         author_paper_count_c = author_paper_count_c,
         author_paper_count_years = author_paper_count_years,
         author_cite_count_c = author_cite_count_c,
-        author_cite_count_years = author_cite_count_years)
+        author_cite_count_years = author_cite_count_years,
+        author_total_citations = a_count_citations)
 
 
 # @app.route('/author/<author_id>/papers', methods = ['GET'])

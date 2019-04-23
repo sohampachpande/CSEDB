@@ -83,6 +83,14 @@ def individual_paper_page(paper_id):
     cursor.execute('CALL paper_citations_notCumul_yearwise("{}")'.format(paper_id))
     year_paper  = cursor.fetchall()
 
+    cursor.execute('CALL summary_of_paper("{}")'.format(paper_id))
+    summary  = cursor.fetchall()
+
+    
+    cursor.execute('CALL paper_keywords("{}")'.format(paper_id))
+    keywords = cursor.fetchall()
+
+
     y = []
     x =  []
     for year,c in year_paper:
@@ -90,4 +98,4 @@ def individual_paper_page(paper_id):
         y.append(c)
     # print(x,y)
 
-    return render_template('paper_temp.html', paper=papers[0], conferences = confs, authors = authors, references = references, papers_cite_this = papers_cite_this, x=x, y=y)
+    return render_template('paper_temp.html', paper=papers[0], conferences = confs, authors = authors, references = references, papers_cite_this = papers_cite_this, x=x, y=y, summary=summary, keywords= keywords)

@@ -16,13 +16,10 @@
                           <input class="btn btn--sm " name="sort" style="background: #eeeeee;color:black ;" type="submit" value="Citation Count">  
                         </form>
                         {% for paper in data_papers %} 
-                            <div class="info card bg-light text-dark" style="margin-top: 10px;">
+                            <div class="info card bg-light text-dark" style="margin-top: 10px;padding-left: 20px;padding-right: 20px">
                                 <p style="margin-left: 5px; margin-top: 20px">
-                                <a style="padding-left: 20px" href="/paper/{{ paper[0] }}"> <b class="author-names">{{ paper[1][:] }}   </b>
+                                <a style="padding-left: 20px;padding-right: 20px" href="/paper/{{ paper[0] }}"> <b class="author-names">{{ paper[1][:] }}   </b>
                                 </a>
-                                <!-- {% for conference in paper[3] %}
-                                <a style="align:right; margin-left: 20px;"href="/conference/{{ conference[0] }}"> {{ conference[1]}}-{{ conference[2]}}</a>
-                                {% endfor %} -->
                                 </p>
 
 

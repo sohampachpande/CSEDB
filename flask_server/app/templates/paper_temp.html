@@ -23,8 +23,30 @@
                         <hr>
                         {% endif %}
 
-                        
-                        
+
+                        {% if keywords|length!=0 %}
+                        <div>
+                            <h4>Keywords</h4>
+                            <p style="margin-left: 50px;"> 
+                            {% for kw in keywords %}
+                                {{kw[0]}} ,
+                            {% endfor %}
+                            </p>
+                        </div>
+                        <hr>
+                        {% endif %}
+
+
+                        {% if summary|length!=0 %}
+                        <div>
+                            <h4>Summary</h4>
+                            <p style="margin-left: 50px;"> 
+                                {{summary[0][1]}}
+                            </p>
+                        </div>
+                        <hr>
+                        {% endif %}
+                         
                         {% if conferences|length!=0 %}
                         <div>
                             <h4>Conference(s)</h4>
@@ -32,6 +54,7 @@
                             {% for conference in conferences %}
                                 <a href="/conference/{{ conference[0] }}">{{ conference[1] }}-{{ conference[2]}}</a> ,
                             {% endfor %}
+                            </p>
                         </div>
                         <hr>
                         {% endif %}
