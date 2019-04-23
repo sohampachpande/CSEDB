@@ -12,6 +12,28 @@ def all_paper_pagination(all_data, offset, per_page):
     return all_data[offset:offset+per_page]
 
 
+def get_paper_all_info(papers_list):
+    cursor = db.cursor()
+    return_list = []
+    for a in papers_list:
+        cursor.execute('CALL author_paper("{}")'.format(a[0]))
+        authors = cursor.fetchall()
+
+        cursor.execute('CALL con_paper("{}")'.format(a[0]))
+        conf = cursor.fetchall()
+
+        cursor.execute('CALL paper_fos("{}")'.format(a[0]))
+        fos = cursor.fetchall()
+
+        cursor.execute('CALL total_citation_count_paper("{}")'.format(a[0]))
+        citation = cursor.fetchall()
+        
+        return_list.append([a[0], a[1], authors, conf, fos, citation[0][0]])
+
+    return return_list
+
+
+
 @app.route('/fos_all', methods = ['GET'])
 def get_fos_authors():
     
@@ -24,7 +46,8 @@ def get_fos_papers(fos_id):
     # Fetch a single row using fetchone()
     # data = cursor.fetchone()
     cursor.execute('call FOS_paper("{}")'.format(fos_id))
-    papers = cursor.fetchall()
+    papers_first = cursor.fetchall()
+    papers = get_paper_all_info(papers_first)
 
     cursor.execute('call FOS_aut("{}")'.format(fos_id))
     authors = cursor.fetchall()

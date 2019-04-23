@@ -47,11 +47,29 @@
                         <div class="tab-content">
                             <div id="home" class="container tab-pane active" style="margin-left: 0px"><br>
                                 <input type="text" id="myInput2" onkeyup="myFunction2()" placeholder="Search by Paper..." title="Type in a name" style="padding:10px; width:300px; margin-bottom: 20px;">
+
                                 {% for paper in papers %} 
-                                    <div class="info papers" style="padding: 5px;">
-                                        <a href="/paper/{{ paper[0] }}">{{ paper[1] }}</a>
-                                        <br>  
-                                    </div>
+                                <div class="papers" >
+                                    <p style="margin-left: 5px; margin-top: 0px">
+                                    <a style="padding-left: 0px;padding-right: 0px; font-size: 18px" href="/paper/{{ paper[0] }}"> {{ paper[1][:] }} 
+                                    </a>
+                                    </p>
+
+
+                                    <p style="text-indent: -4px;margin-left: 20px; margin-bottom: 10px;margin-top: -20px">
+                                    {% for author in paper[2] %}
+                                    <a style="color: #333333; margin-left: 5px;font-size: 14px"href="/author/{{ author[0] }}"> {{ author[1]}}.</a>
+                                    {% endfor %}
+                                    </p>
+
+                                    <p>{% for conference in paper[3] %}
+                                    <a style="font-size: 14px; margin-left: 5px; margin-top: 10px"href="/conference/{{ conference[0] }}"> {{ conference[1]}}-{{ conference[2]}}</a>
+                                    {% endfor %}
+                                    </p>
+                        
+                                    <!-- <p style=" margin-left: 25px; margin-bottom: 20px;margin-top: -15px">Citations: {{ paper[5] }} &nbsp;&nbsp;&nbsp;&nbsp;</p>  -->              
+                                <hr>
+                                </div> 
                                 {% endfor %}
                             </div>
                             <div id="menu1" class="container tab-pane fade" style="margin-left: 0px"><br>
