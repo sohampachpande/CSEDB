@@ -1,0 +1,46 @@
+<html>
+    
+    {% include 'head.html' %}
+
+
+    <body>
+        <!-- <h1>Hello, {{ user.username }}!</h1> -->
+
+        {% include 'navbar.html' %}
+
+
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 offset-lg-2" style="margin-top:60px;">
+                            <form method='post' action='/submit'>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Paper name</label>
+                                    <input type="text" class="form-control" id="paper" name="paper" aria-describedby="emailHelp" placeholder="Enter paper">
+                                </div>
+                                <div class="form-group">
+                                        <label for="exampleInputEmail1">Keywords</label>
+                                        <input type="text" class="form-control" id="keywords" name="keywords" aria-describedby="emailHelp" placeholder="Enter keywords">
+                                </div>
+                                <div class="form-group">
+                                        <label for="exampleInputEmail1">Author</label>
+                                        <input type="text" class="form-control" id="authors" name="authors" aria-describedby="emailHelp" placeholder="Enter author">
+                                </div>
+                                <div class="form-group">
+                                        <label for="exampleInputEmail1">Conference</label>
+                                        <input type="text" class="form-control" id="conferences" name="conferences" aria-describedby="emailHelp" placeholder="Enter Conference">
+                                </div>
+                                <div class="form-group">
+                                        <label for="exampleInputEmail1">Fields of study</label>
+                                        <input type="text" class="form-control" id="fos" name="fos" aria-describedby="emailHelp" placeholder="Enter fields of study">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+    </body>
+
+</html>
