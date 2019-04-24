@@ -51,3 +51,9 @@ def submit():
             fos.append(0)
 
     return "submitted successfully"
+
+@app.route('/search_nlp', methods = ['POST'])
+def nlp_query():
+    query = request.form.get("nlp")
+
+    
