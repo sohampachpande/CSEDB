@@ -33,17 +33,17 @@
                         </form>
 
 
-                        <form>
-                        Select Field of Study: <br>
-                        {% for fos in fos_list %} 
-                        {% if fos[0] == fos_id %}
-                        <input class="btn btn-light active" style="padding: 5px; margin-bottom: 5px" name="selectFOS" type="submit" 
-                        value="{{fos[1]}}"> 
-                        {% else %}
-                        <input class="btn btn-light" style="background-color: #eeeeee; padding: 5px; margin-bottom: 5px" name="selectFOS" type="submit" 
-                        value="{{ fos[1] }}"> 
-                        {% endif %}
-                        {% endfor %}
+                        <form action="/author_all">
+                            Select Field of Study: <br>
+                            {% for fos in fos_list %} 
+                            {% if fos[0] == fos_id %}
+                            <input class="btn btn-light active" style="padding: 5px; margin-bottom: 5px" name="selectFOS" type="submit" 
+                            value="{{fos[1]}}"> 
+                            {% else %}
+                            <input class="btn btn-light" style="background-color: #eeeeee; padding: 5px; margin-bottom: 5px" name="selectFOS" type="submit" 
+                            value="{{ fos[1] }}"> 
+                            {% endif %}
+                            {% endfor %}
                         </form>
 
                         {% for author in data_authors %} 
