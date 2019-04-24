@@ -1,0 +1,63 @@
+<html>
+        {% include 'head.html' %}
+
+    <body>
+        {% include 'navbar.html' %}
+
+        <section>
+            <div class="container-fluid">
+                <div class="row">
+
+                    <div class="col-lg-10 author-info offset-lg-1">
+                        <h2 style="margin-left: 0px; margin-top: 50px">Search Results for Paper: "{{query}}"</h2>
+                        
+                        <!-- <form action="/papers_all">
+                          Sort by: &nbsp;&nbsp;
+                          <input class="btn btn--sm " name="sort" style="background: #eeeeee;color:black ;" type="submit" value="Citation Count">  
+                        </form> -->
+                        {% for paper in data_papers %} 
+                            <div class="info card bg-light text-dark" style="margin-top: 10px;padding-left: 20px;padding-right: 20px">
+                                <p style="margin-left: 5px; margin-top: 20px">
+                                <a style="padding-left: 20px;padding-right: 20px" href="/paper/{{ paper[0] }}"> <b class="author-names">{{ paper[1][:] }}   </b>
+                                </a>
+                                </p>
+
+
+                                <p style="margin-left: 20px; margin-bottom: 10px;margin-top: -20px">
+                                {% for author in paper[2] %}
+                                <a style="margin-left: 5px;"href="/author/{{ author[0] }}"> {{ author[1]}}.</a>
+                                {% endfor %}
+                                </p>
+
+                                <p>{% for conference in paper[3] %}
+                                <a style="align:right; margin-left: 25px; margin-top: 50px"href="/conference/{{ conference[0] }}"> {{ conference[1]}}-{{ conference[2]}}</a>
+                                {% endfor %}
+                                </p>
+                    
+
+
+                                <p style=" margin-left: 25px; margin-bottom: 20px;margin-top: -15px">Citations: {{ paper[5] }} &nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+                                
+
+
+<!--                                 <p style="margin-left: 5px; margin-bottom: 15px">
+                                {% for fos in paper[4] %}
+                                <a class="fancy-a" style="margin-left: 10px;margin-right: 10px; padding:10px;"href="/fos/{{ fos[0] }}"> {{ fos[1]}}</a>
+                                {% endfor %}
+                                </p>  -->                     
+
+                            </div> 
+                        {% endfor %}
+                        <br>
+                        {{ pagination.info  }}
+                        {{ pagination.links }}
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    {% include 'footerbar.html' %}
+    </body>
+</html>     

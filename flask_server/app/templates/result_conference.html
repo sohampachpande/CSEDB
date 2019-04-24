@@ -1,0 +1,93 @@
+<html>
+	{% include 'head.html' %}
+	
+    <body>
+
+        {% include 'navbar.html' %}
+
+        <section>
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- <div class="col-lg-2 author-letters card sticky-top" >
+                    	<h5 style="margin-top: 50px">All Conference Options</h5>
+                        <div class="links-auth">
+                            <p>All Conference Option 1 </p>
+                            <p>All Conference Option 2 </p>
+                        </div> -->
+                    </div>
+                    <div class="col-lg-8 offset-lg-1 author-info">
+                        <h2 style="margin-left: 0px; margin-top: 50px">Search Results for Conference: "{{query}}"</h2>
+
+                        <input type="text" id="myInput1" onkeyup="myFunction1()" placeholder="Search by Conference..." title="Type in a name" style="padding:10px; width:300px; ">
+                        <input type="text" id="myInput2" onkeyup="myFunction2()" placeholder="Search by Year..." title="Type in a name" style="padding:10px; width:300px; ">
+        				<hr>
+
+                        {% for conf in pages %} 
+                        <div class="conf_name" style="margin-top:10px;">
+                            <div class="info" style="padding: 20px;">
+                                <a href="/conference/{{ conf[0] }}"><h5>{{ conf[0] }}</h5></a>
+                                {% for year in conf[1] %}
+                                <a href="/conference/{{ year[1] }}"><button type="button" class="btn btn-light" style="padding: 10px; margin-top:10px;">{{ year[0] }}</button></a>
+                                {% endfor %}
+                            </div>
+                            <hr>  
+                        </div>  
+				        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+<!--         {% for page in pages %} 
+        <p>{{ page[0] }}</p> 
+        {% endfor %} -->
+
+
+        <script>
+            function myFunction1() {
+                var input, filter, conference_boxes;
+                input = document.getElementById("myInput1");
+                filter = input.value.toUpperCase();
+                conference_boxes = document.getElementsByClassName("conf_name");
+                console.log(conference_boxes);
+                for (i = 0; i < conference_boxes.length; i++) {
+                    t = conference_boxes[i];
+                    txtValue = t.textContent || t.innerText;
+                    console.log("a");
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        t.style.display = "";
+                    } 
+                    else {
+                        t.style.display = "none";
+                    }    
+                }
+            }
+        </script>
+
+
+    <script>
+        function myFunction2() {
+            var input, filter, conference_boxes;
+            input = document.getElementById("myInput2");
+            filter = input.value.toUpperCase();
+            conference_boxes = document.getElementsByClassName("conf_name");
+            console.log(conference_boxes);
+            for (i = 0; i < conference_boxes.length; i++) {
+                t = conference_boxes[i];
+                txtValue = t.textContent || t.innerText;
+                console.log("a");
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    t.style.display = "";
+                } 
+                else {
+                    t.style.display = "none";
+                }    
+            }
+        }
+    </script>
+
+    <br>
+    {% include 'footerbar.html' %}
+    </body>
+</html>

@@ -1,0 +1,55 @@
+<html>
+        {% include 'head.html' %}
+
+    <body>
+        {% include 'navbar.html' %}
+
+        <section>
+            <div class="container-fluid">
+                <div class="row">
+
+                    <div class="col-lg-10 author-info offset-lg-1">
+                        <h2 style="margin-left: 0px; margin-top: 50px">Search Results for Author: "{{ query }}"</h2>                     
+
+                        
+
+                        {% for author in data_authors %} 
+                            <div class="info card bg-light text-dark" style="margin-top: 10px;">
+                                <a style="padding: 20px; margin-bottom: -10px;" href="/author/{{ author[0] }}"> <b class="author-names">{{ author[1] }}</b>
+                                </a>
+
+                                 {% if author[5]|length != 0 %}
+                                <p style="margin-left: 30px; margin-bottom: 5px;margin-top: -10px;">
+                                <!-- Affiliations: -->
+                                {% for affiliation in author[5] %}
+                                    <p style="margin-left: 40px; margin-bottom: 0px"><i class="fas fa-university"></i> {{ affiliation[1]}}</p> 
+                                {% endfor %}
+                                </p>
+                                {% endif %}
+
+                                <p style="margin-left: 25px; margin-bottom: 5px">Papers: {{ author[3] }} &nbsp;&nbsp;&nbsp;&nbsp; Citations: {{ author[4] }} &nbsp;&nbsp;&nbsp;&nbsp;</p>
+
+
+                                <p style="margin-left: 10px; margin-bottom: 15px">
+                                {% for fos in author[2] %}
+                                <a class="fancy-a" style="margin-left: 10px; margin-right: 10px; padding:10px;"href="/fos/{{ fos[0] }}"> {{ fos[1]}}</a>
+                                {% endfor %}
+                                </p>
+
+                            </div> 
+				        {% endfor %}
+
+                        <br>
+
+                        {{ pagination.info  }}
+                        <br>
+                        {{ pagination.links }}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <br>
+    {% include 'footerbar.html' %}   
+    </body>
+</html>

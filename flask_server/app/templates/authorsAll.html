@@ -40,7 +40,7 @@
                         <input class="btn btn-light active" style="padding: 5px; margin-bottom: 5px" name="selectFOS" type="submit" 
                         value="{{fos[1]}}"> 
                         {% else %}
-                        <input class="btn btn-light" style="padding: 5px; margin-bottom: 5px" name="selectFOS" type="submit" 
+                        <input class="btn btn-light" style="background-color: #eeeeee; padding: 5px; margin-bottom: 5px" name="selectFOS" type="submit" 
                         value="{{ fos[1] }}"> 
                         {% endif %}
                         {% endfor %}
@@ -65,7 +65,7 @@
 
                                 <p style="margin-left: 10px; margin-bottom: 15px">
                                 {% for fos in author[2] %}
-                                <a class="fancy-a" style="margin-left: 10px;margin-right: 10px; padding:10px;"href="/fos/{{ fos[0] }}"> {{ fos[1]}}</a>
+                                <a class="fancy-a" style="margin-left: 10px; margin-right: 10px; padding:10px;"href="/fos/{{ fos[0] }}"> {{ fos[1]}}</a>
                                 {% endfor %}
                                 </p>
 
