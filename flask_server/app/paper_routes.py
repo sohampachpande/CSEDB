@@ -86,9 +86,14 @@ def individual_paper_page(paper_id):
     cursor.execute('CALL summary_of_paper("{}")'.format(paper_id))
     summary  = cursor.fetchall()
 
-    
     cursor.execute('CALL paper_keywords("{}")'.format(paper_id))
     keywords = cursor.fetchall()
+
+    cursor.execute('CALL paper_fos("{}")'.format(paper_id))
+    foss = cursor.fetchall()
+
+    cursor.execute('CALL total_citation_count_paper("{}")'.format(paper_id))
+    citation = cursor.fetchall()
 
 
     y = []
@@ -98,4 +103,4 @@ def individual_paper_page(paper_id):
         y.append(c)
     # print(x,y)
 
-    return render_template('paper_temp.html', paper=papers[0], conferences = confs, authors = authors, references = references, papers_cite_this = papers_cite_this, x=x, y=y, summary=summary, keywords= keywords)
+    return render_template('paper_temp.html', paper=papers[0], conferences = confs, authors = authors, references = references, papers_cite_this = papers_cite_this, x=x, y=y, summary=summary, keywords= keywords, foss=foss, citation_count=citation[0][0])
