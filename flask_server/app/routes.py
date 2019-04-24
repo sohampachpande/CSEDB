@@ -41,7 +41,7 @@ def submit():
     conference = request.form.get("conferences")
     references = request.form.get("references").split(",")
     affiliations = request.form.get("affiliations").split(",")
-
+    places = request.form.get("places").split(",")
     keywords_list = keywords.split(",")
     
     summary = request.form.get("summary")
