@@ -153,6 +153,8 @@ def get_author_page(author_id):
     cursor.execute('call coauthor("{}")'.format(author_id))
     a_coauth = cursor.fetchall()
 
+    cursor.execute('CALL author_affiliation("{}")'.format(author_id))
+    affiliation = cursor.fetchall()
 
     cursor.execute(' CALL  Author_PaperDistribution("{}")'.format(author_id))
     author_paper_count = cursor.fetchall()
@@ -197,7 +199,8 @@ def get_author_page(author_id):
         author_paper_count_years = author_paper_count_years,
         author_cite_count_c = author_cite_count_c,
         author_cite_count_years = author_cite_count_years,
-        author_total_citations = a_count_citations)
+        author_total_citations = a_count_citations,
+        affiliation= affiliation)
 
 
 # @app.route('/author/<author_id>/papers', methods = ['GET'])

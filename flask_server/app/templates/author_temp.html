@@ -8,7 +8,17 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-6 author-info offset-lg-1" style="padding-left: 60px;">
-                        <h2 style="margin-left: 0px; margin-top: 50px; margin-left: -20px;">{{author[1]}}</h2>
+                        <h2 style="margin-left: 0px; margin-top: 50px; margin-bottom: 15px;margin-left: -20px;">{{author[1]}}</h2>
+
+                        {% if affiliation|length != 0 %}
+                        <p style="margin-left: 10px; margin-bottom: 5px;margin-top: -10px;">
+                        <!-- Affiliations: -->
+                        {% for aff in affiliation %}
+                            <p style="margin-left: 7px; margin-bottom: 0px"><i class="fas fa-university"></i> {{ aff[1]}}</p> 
+                        {% endfor %}
+                        </p>
+                        {% endif %}
+
                         <br><br>
                         {% if author_total_citations|length!=0 %}
                         <!-- Author Field of Study -->
@@ -29,6 +39,7 @@
                         <hr>
                         {%endif%}
 
+
                         {% if auth_papers|length!=0 %}
                         <h4>Papers</h4>
                         {% for paper in auth_papers %} 
@@ -37,7 +48,6 @@
                                 <a style="padding-left: 0px;padding-right: 0px; font-size: 18px" href="/paper/{{ paper[0] }}"> {{ paper[1][:] }} 
                                 </a>
                                 </p>
-
 
                                 <p style="text-indent: -4px;margin-left: 20px; margin-bottom: 10px;margin-top: -20px">
                                 {% for author in paper[2] %}
@@ -56,14 +66,6 @@
                         {% endfor %}
                         {% endif %}
                         
-                        {% if auth_coauth|length!=0 %}
-                        <!-- Author Co Authors -->
-                        <h4> Co-Authors </h4>
-                        {% for coauth in auth_coauth %} 
-                                <li><a href="/author/{{ coauth[0] }}"> {{ coauth[1] }} </a>
-                        {% endfor %}
-                        <hr>    
-                        {%endif%}
 
                         {% if auth_conference|length!=0 %}
                         <!-- Authors Conferences -->
@@ -90,6 +92,15 @@
                         <div id="paper-year"></div>
 
                         <div id="cite-year"></div>
+
+                         {% if auth_coauth|length!=0 %}
+                        <!-- Author Co Authors -->
+                        <h4> Co-Authors </h4>
+                        {% for coauth in auth_coauth %} 
+                                <li><a href="/author/{{ coauth[0] }}"> {{ coauth[1] }} </a>
+                        {% endfor %}
+                        <hr>    
+                        {%endif%}
                     </div>
                 </div>
             </div>
