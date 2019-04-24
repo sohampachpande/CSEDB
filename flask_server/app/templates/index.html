@@ -9,25 +9,29 @@
         {% include 'navbar.html' %}
     
     <section>
-        <div class="container" style="text-align:center; margin-top:150px;">
-            <h1>Conference Paper Search</h1>
+        <div class="container" style="text-align:center; margin-top:100px;">
+            <h1 style="font-size: 70px">SciBase</h1>
+            <h4> Making Science Accessible</h4>
         </div>
     </section>
 
     <section class="search-sec">
-        <div class="container" style="padding-top: 30px;">
+        <!-- <img src="/static/back.jpg"> -->
+        <div class="container" style="padding-top: -20px;">
             <form action="/search" method="post" novalidate="novalidate">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="row" style="padding:40px;">
+                        <div class="row" style="padding:10px;">
                             <div class="col-lg-3 col-md-3 col-sm-12 p-0" >
                                 <input type="text" class="form-control search-slt" name="Author" placeholder="Author name">
                             </div>
+                            
+                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                <input type="text" class="form-control search-slt" name="Paper" placeholder="Paper">
+                            </div>
+
                              <div class="col-lg-3 col-md-3 col-sm-12 p-0">
                                 <input type="text" class="form-control search-slt" name="Conference" placeholder="Conference name">
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                                <input type="text" class="form-control search-slt" name="Year" placeholder="Year">
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12 p-0">
                                 <button class="btn btn-secondary button" type="submit">Search</button>  
@@ -38,7 +42,24 @@
             </form>
         </div>
     </section>
-    
+
+    <section>
+        <div class="flex-container" style="margin-top: 50px">
+          <div style="width: 250px; text-align: center; font-size: 24px; padding: 25px">Papers: 23,774 
+            <br>
+            <p style="font-size: 16px">and counting</p></div>
+          <div style="width: 250px; text-align: center; font-size: 24px; padding: 25px">Authors: 18,336 
+            <br>
+            <p style="font-size: 16px">and counting</p></div>
+          <div style="width: 250px; text-align: center; font-size: 24px; padding: 25px">Venues: 336 
+            <br>
+            <p style="font-size: 16px">and counting</p></div>
+          <div style="width: 250px; text-align: center; font-size: 24px; padding: 25px">Citations: 1,24,836 
+            <br>
+            <p style="font-size: 16px">and counting</p></div>
+          </div>
+    </section>
+
     <br>
     {% include 'footerbar.html' %}
     </body>

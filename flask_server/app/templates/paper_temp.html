@@ -11,12 +11,31 @@
                         <h2 style="margin-left: 0px; margin-top: 50px; margin-left: -20px;">{{paper[1]}}</h2>
                         <br><br>
 
+                        <div>
+                            <h4>Citations: {{citation_count}}</h4> 
+                            <!-- p style="margin-left: 50px;">{{citation_count}}
+                            </p> -->
+                        </div>
+                        <hr>
+
                         {% if authors|length!=0 %}
                         <div>
                             <h4>Author(s)</h4> 
                             <p style="margin-left: 50px;"> 
                             {% for author in authors %}
                                 <a href="/author/{{ author[0] }}">{{ author[1] }}</a>  . 
+                            {% endfor %}
+                            </p>
+                        </div>
+                        <hr>
+                        {% endif %}
+
+                        {% if foss|length!=0 %}
+                        <div>
+                            <h4>Field Of Study</h4> 
+                            <p style="margin-left: 50px;"> 
+                            {% for fos in foss %}
+                                <a href="/fos/{{ fos[0] }}">{{ fos[1] }}</a>  . 
                             {% endfor %}
                             </p>
                         </div>

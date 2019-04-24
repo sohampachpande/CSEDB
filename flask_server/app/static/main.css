@@ -121,6 +121,14 @@
     text-align: center;
   }
 
-.checkbox-inline{
-    padding: 5px;
+.flex-container {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-container > div {
+  margin: 10px;
+  padding: 20px;
+  font-size: 30px;
+  background-color: #eeeeee;
 }

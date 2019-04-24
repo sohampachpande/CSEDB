@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
 from app import app
 
 from app import db
@@ -15,7 +15,7 @@ def FirstNameLastName(name):
 @app.route('/home')
 def index():
     user = {'username': 'Soham'}
-
+    session.clear()
     # Todo : Make search
     
     return render_template('index.html', title='CSE DB', user=user)

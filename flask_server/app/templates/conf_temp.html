@@ -10,8 +10,15 @@
                     <div class="col-lg-6 author-info offset-lg-1" style="padding-left: 60px;">
                         <h2 style="margin-left: 0px; margin-top: 50px; margin-left: -20px;">{{conf[1]}} - {{conf[2]}}</h2>
                         <br><br>
+                        <div>
+                            <h4>Overall {{conf[1]}} Statistics</h4>
+                                <p style="margin-left: 50px;"> Number of Accepted Papers - {{ main_paper_count }} &nbsp;&nbsp;&nbsp;&nbsp; Number of Authors - {{ main_author_count }}
+                                </p>       
+                        </div>
+                        <hr>
 
                         <div>
+                            <h4>{{conf[2]}} Statistics</h4>
                                 <p style="margin-left: 50px;"> Number of Accepted Papers - {{ no_papers }} &nbsp;&nbsp;&nbsp;&nbsp; Number of Authors - {{ no_authors }}
                                 </p>       
                         </div>
@@ -19,10 +26,10 @@
 
                         {% if fos|length!=0 %}
                         <div>
-                            <h4>FOS</h4> 
+                            <h4>Field Of Study</h4> 
                             <p style="margin-left: 50px;"> 
                             {% for f in fos %}
-                                <a href="/fos/{{ f[0] }}">{{ f[1] }}</a>  . 
+                                <a href="/fos/{{ f[0] }}">{{ f[1] }}</a>   
                             {% endfor %}
                             </p>
                         </div>

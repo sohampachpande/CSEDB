@@ -9,30 +9,12 @@
                 <div class="row">
 
                     <div class="col-lg-10 author-info offset-lg-1">
-                        <h2 style="margin-left: 0px; margin-top: 50px">Papers</h2>
+                        <h2 style="margin-left: 0px; margin-top: 50px">Search Results for Paper: "{{query}}"</h2>
                         
-                        <form action="/papers_all">
+                        <!-- <form action="/papers_all">
                           Sort by: &nbsp;&nbsp;
-                          {% if sort_id == "Citation Count" %}
-                            <input class="btn btn-light active" name="sort" type="submit" value="Citation Count">  
-                          {%else%}
-                            <input class="btn btn-light " name="sort" type="submit" value="Citation Count">
-                          {%endif%}
-                        </form>
-
-                        <form action="/papers_all">
-                            Select Field of Study: <br>
-                            {% for fos in fos_list %} 
-                            {% if fos[0] == fos_id %}
-                            <input class="btn btn-light active" style="padding: 5px; margin-bottom: 5px" name="selectFOS" type="submit" 
-                            value="{{fos[1]}}"> 
-                            {% else %}
-                            <input class="btn btn-light" style="background-color: #eeeeee; padding: 5px; margin-bottom: 5px" name="selectFOS" type="submit" 
-                            value="{{ fos[1] }}"> 
-                            {% endif %}
-                            {% endfor %}
-                        </form>
-                        
+                          <input class="btn btn--sm " name="sort" style="background: #eeeeee;color:black ;" type="submit" value="Citation Count">  
+                        </form> -->
                         {% for paper in data_papers %} 
                             <div class="info card bg-light text-dark" style="margin-top: 10px;padding-left: 20px;padding-right: 20px">
                                 <p style="margin-left: 5px; margin-top: 20px">
@@ -78,4 +60,4 @@
 
     {% include 'footerbar.html' %}
     </body>
-</html>
+</html>     

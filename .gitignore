@@ -1,1 +1,9 @@
 flask_server/app/__pycache__/
+flask_server/app/.DS_Store
+flask_server/.DS_Store
+flask_server/app/__init__.pyc
+flask_server/app/templates/.DS_Store
+flask_server/app/static/.DS_Store
+flask_server/app/templates/loss-model.py
+flask_server/app/templates/index.html
+flask_server/app/templates/modification.html
