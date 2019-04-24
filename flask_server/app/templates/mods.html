@@ -16,7 +16,7 @@
                             <form method='post' action='/submit'>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Paper name</label>
-                                    <input type="text" class="form-control" id="paper" name="paper" aria-describedby="emailHelp" placeholder="Enter paper">
+                                    <input type="text" required class="form-control" id="paper" name="paper" aria-describedby="emailHelp" placeholder="Enter paper">
                                 </div>
                                 <div class="form-group">
                                         <label for="exampleInputEmail1">Keywords</label>
@@ -24,11 +24,19 @@
                                 </div>
                                 <div class="form-group">
                                         <label for="exampleInputEmail1">Authors</label>
-                                        <input type="text" class="form-control" id="authors" name="authors"  placeholder="Enter authors (comma separated)">
+                                        <input type="text" required class="form-control" id="authors" name="authors"  placeholder="Enter authors (comma separated)">
+                                </div>
+                                <div class="form-group">
+                                        <label for="exampleInputEmail1">Affiliations</label>
+                                        <input type="text" required class="form-control" id="authors" name="affiliations"  placeholder="Enter affiliations (comma separated)">
+                                </div>
+                                <div class="form-group">
+                                        <label for="exampleInputEmail1">References</label>
+                                        <input type="text" required class="form-control" id="references" name="references"  placeholder="Enter references (comma separated)">
                                 </div>
                                 <div class="form-group">
                                         <label for="exampleInputEmail1">Conference</label>
-                                        <input type="text" class="form-control" id="conferences" name="conferences" aria-describedby="emailHelp" placeholder="Enter Conference">
+                                        <input type="text" required class="form-control" id="conferences" name="conferences" aria-describedby="emailHelp" placeholder="Enter Conference">
                                 </div>
                                 <div class="form-group">
                                         <label for="exampleInputEmail1">Fields of study</label><br>
@@ -40,7 +48,7 @@
                                 </div>
                                 <div class="form-group">
                                         <label for="exampleInputEmail1">Year</label>
-                                        <input type="text" class="form-control" id="fos" name="fos" aria-describedby="emailHelp" placeholder="Enter year">
+                                        <input type="text" required class="form-control" id="year" name="year" aria-describedby="emailHelp" placeholder="Enter year">
                                 </div>
                                 <div class="form-group">
                                         <label for="exampleInputEmail1">Summary</label>

@@ -39,9 +39,12 @@ def submit():
     keywords = request.form.get("keywords")
     authors = request.form.get("authors")
     conference = request.form.get("conferences")
+    references = request.form.get("references").split(",")
+    affiliations = request.form.get("affiliations").split(",")
 
     keywords_list = keywords.split(",")
-
+    
+    summary = request.form.get("summary")
 
     fos = list()
     for f in fos_list:
@@ -56,4 +59,3 @@ def submit():
 def nlp_query():
     query = request.form.get("nlp")
 
-    
