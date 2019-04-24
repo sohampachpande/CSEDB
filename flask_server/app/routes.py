@@ -10,7 +10,6 @@ def FirstNameLastName(name):
 # # Connect to the database
 # db = PyMySQL.connect("10.0.25.35","sohamp","s27498","CSResearchPapers" )
 
-@app.route('/')
 @app.route('/index')
 @app.route('/home')
 def index():
@@ -83,6 +82,9 @@ def submit():
     
     
     ###############################
+    cursor.execute('call check_paper_exists_and_add("{}")'.format(title))
+    check_paper = cursor.fetchall()
+    
     
     try:
         cursor.execute('call check_paper_exists_and_add("{}")'.format(title))
@@ -106,6 +108,7 @@ def submit():
                 cursor.execute('call addKeywords("{}","{}")'.format(check_paper[0][0], i))
             
             cursor.execute('call addSummary("{}","{}")'.format(check_paper[0][0], summary))
+            db.commit()
             cursor.close()
             return("Submitted Successfully")
     except:
