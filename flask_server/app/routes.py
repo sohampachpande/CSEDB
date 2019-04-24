@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, session, flash
 from app import app
-
+import re
 from app import db
 
 def FirstNameLastName(name):
@@ -117,7 +117,150 @@ def submit():
     
 
 
+
+
+def nlq(query):
+    re1 = re.compile('is (.*) accpeting papers from (\w+)')
+    re2 = re.compile('has (.*) published any papers')
+    re3 = re.compile('does (.*) published papers on (.*)')
+    re4 = re.compile('has (.*) and (.*) published together')
+    re5 = re.compile('how many papers are published by (.*)')
+    re6 = re.compile('how many citations does (.*) have')
+    
+    if re1.findall(query) != []:
+        flg = 1
+        return re1.findall(query), flg
+    
+    elif re2.findall(query) != []:
+        flg = 2
+        return re2.findall(query), flg
+    
+    elif re3.findall(query) != []:
+        flg = 3
+        return re3.findall(query), flg
+    
+    elif re4.findall(query) != []:
+        flg = 4
+        return re4.findall(query), flg
+    
+    elif re5.findall(query) != []:
+        flg = 5
+        return re5.findall(query), flg
+    
+    elif re6.findall(query) != []:
+        flg = 6
+        return re6.findall(query), flg
+    else:
+        flg = 0
+        return None, flg
+
+def nlq_answer(query):
+    result, flg = nlq(query)
+
+    cursor = db.cursor()
+    
+    if flg == 1:
+        cursor.execute('CALL conferencename_nlq("{}")'.format(result[0]))
+        conf_id = cursor.fetchall()
+        
+        if conf_id == []:
+            pass
+        
+        else:
+            for i,w in enumerate(conf_id):
+                cursor.execute('CALL conference_FieldOfStudy("{}")'.format(w[0]))
+                fos = cursor.fetchall()
+
+                for i in fos:
+                    if i[1].lower() == result[1]:
+                        return 'Yes'
+        return 'No'
+
+    elif flg == 2:
+        cursor.execute('CALL autname_nlq("{}")'.format(result[0]))
+        try:
+            auth_id = cursor.fetchall()[0][0]
+            
+            cursor.execute('CALL Number_of_papers_of_author("{}")'.format(auth_id))
+            answer = cursor.fetchall()
+            try:
+                if str(answer[0][0]) > 'a':
+                    pass
+                return 'Yes'
+
+            except:
+                pass
+            
+            return 'No'
+        except:
+            return 'No'    
+        
+    elif flg == 3:
+        cursor.execute('CALL autname_nlq("{}")'.format(result[0]))
+        try:
+            auth_id = cursor.fetchall()[0][0]
+            
+            cursor.execute('CALL FOS("{}")'.format(auth_id[0][0]))
+            field = cursor.fetchall()
+            
+            if field == []:
+                pass
+            elif field[0][0] == result[1]:
+                return 'Yes'
+            
+            return 'No'
+        except:
+            return 'No'
+
+    elif flg == 4:
+        cursor.execute('CALL autname_nlq("{}")'.format(result[0]))
+        try:
+            auth_id = cursor.fetchall()[0][0]
+            
+            cursor.execute('CALL coauthor("{}")'.format(auth_id))
+            answer = cursor.fetchall()
+            
+            try:
+                if answer[0][0] > 'a':
+                    pass
+                return 'Yes'
+            except:
+                pass
+            
+            return 'No'
+        except:
+            return 'No'
+
+    elif flg == 5:
+        cursor.execute('CALL autname_nlq("{}")'.format(result[0]))
+        try:
+            auth_id = cursor.fetchall()[0][0]
+            
+            cursor.execute('CALL Number_of_papers_of_author("{}")'.format(auth_id))
+            answer = cursor.fetchall()
+            return answer[0][0]
+        except:
+            return 'No such author'
+
+    elif flg == 6:
+        try:
+            cursor.execute('CALL autname_nlq("{}")'.format(result[0]))
+            auth_id = cursor.fetchall()[0][0]
+            
+            cursor.execute('CALL Number_of_citations_of_author("{}")'.format(auth_id))
+            answer = cursor.fetchall()
+            return answer[0][0]
+        except:
+            return 'No such author'
+        
+    else:
+        return "Query Not Understood"
+
+
 @app.route('/search_nlp', methods = ['POST'])
 def nlp_query():
-    query = request.form.get("nlp")
+    query = request.form.get("nlp").lower()
+
+    s = nlq_answer(query)
+    return str(s)
 
