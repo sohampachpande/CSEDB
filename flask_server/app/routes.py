@@ -24,17 +24,30 @@ def index():
 @app.route('/add')
 def cite_net():
     user = {'username': 'Soham'}
-    return render_template('mods.html', title='CSE DB', user=user)
+
+    fos_list = [['F-0', 'Error Correction and Code-Switching'], ['F-1', 'Word Segmentation'], ['F-2', 'Natural Language Processing'], ['F-3', 'Computational Linguitics on Twitter'], ['F-4', 'Dialogue and Discourse'], ['F-5', 'Sentiment Analysis'], ['F-6', 'Speech Recognition'], ['F-7', 'Information Extraction'], ['F-8', 'Word-Sense Disambiguation'], ['F-9', 'Lexical Acquisition'], ['F-10', 'Machine Translation'], ['F-11', 'Semantic Similarity'], ['F-12', 'Dependency Parsing'], ['F-13', 'Language Annotation'], ['F-14', 'Multilingual NLP']]
+
+    return render_template('mods.html', title='CSE DB', user=user, fos_list = fos_list)
 
 
 @app.route('/submit', methods = ['POST'])
 def submit():
+
+    fos_list = [['F-0', 'Error Correction and Code-Switching'], ['F-1', 'Word Segmentation'], ['F-2', 'Natural Language Processing'], ['F-3', 'Computational Linguitics on Twitter'], ['F-4', 'Dialogue and Discourse'], ['F-5', 'Sentiment Analysis'], ['F-6', 'Speech Recognition'], ['F-7', 'Information Extraction'], ['F-8', 'Word-Sense Disambiguation'], ['F-9', 'Lexical Acquisition'], ['F-10', 'Machine Translation'], ['F-11', 'Semantic Similarity'], ['F-12', 'Dependency Parsing'], ['F-13', 'Language Annotation'], ['F-14', 'Multilingual NLP']]
+
     paper = request.form.get("paper")
     keywords = request.form.get("keywords")
     authors = request.form.get("authors")
-    conferences = request.form.get("conferences")
-    fos = request.form.get("fos")
+    conference = request.form.get("conferences")
 
     keywords_list = keywords.split(",")
-    conferences_list = conferences.split(",")
+
+
+    fos = list()
+    for f in fos_list:
+        if request.form.get(f[1]):
+            fos.append(1)
+        else:
+            fos.append(0)
+
     return "submitted successfully"
