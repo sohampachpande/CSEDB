@@ -120,3 +120,7 @@
     background-color: #efefef;
     text-align: center;
   }
+
+.checkbox-inline{
+    padding: 5px;
+}

@@ -12,7 +12,7 @@
         <section>
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-4 offset-lg-2" style="margin-top:60px;">
+                    <div class="col-lg-4 offset-lg-2" style="margin-top:60px; padding-bottom: 60px;">
                             <form method='post' action='/submit'>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Paper name</label>
@@ -20,19 +20,31 @@
                                 </div>
                                 <div class="form-group">
                                         <label for="exampleInputEmail1">Keywords</label>
-                                        <input type="text" class="form-control" id="keywords" name="keywords" aria-describedby="emailHelp" placeholder="Enter keywords">
+                                        <input type="text" class="form-control" id="keywords" name="keywords"  placeholder="Enter keywords">
                                 </div>
                                 <div class="form-group">
-                                        <label for="exampleInputEmail1">Author</label>
-                                        <input type="text" class="form-control" id="authors" name="authors" aria-describedby="emailHelp" placeholder="Enter author">
+                                        <label for="exampleInputEmail1">Authors</label>
+                                        <input type="text" class="form-control" id="authors" name="authors"  placeholder="Enter authors (comma separated)">
                                 </div>
                                 <div class="form-group">
                                         <label for="exampleInputEmail1">Conference</label>
                                         <input type="text" class="form-control" id="conferences" name="conferences" aria-describedby="emailHelp" placeholder="Enter Conference">
                                 </div>
                                 <div class="form-group">
-                                        <label for="exampleInputEmail1">Fields of study</label>
-                                        <input type="text" class="form-control" id="fos" name="fos" aria-describedby="emailHelp" placeholder="Enter fields of study">
+                                        <label for="exampleInputEmail1">Fields of study</label><br>
+                                        {% for fos in fos_list %}
+                                        <label class="checkbox-inline">
+                                        <input type="checkbox" name="{{ fos[0] }}">&nbsp;&nbsp;{{ fos[1] }}
+                                        </label>
+                                        {% endfor %}
+                                </div>
+                                <div class="form-group">
+                                        <label for="exampleInputEmail1">Year</label>
+                                        <input type="text" class="form-control" id="fos" name="fos" aria-describedby="emailHelp" placeholder="Enter year">
+                                </div>
+                                <div class="form-group">
+                                        <label for="exampleInputEmail1">Summary</label>
+                                        <input type="text" class="form-control" id="fos" name="summary" aria-describedby="emailHelp" placeholder="Enter Summary">
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </form>
@@ -40,7 +52,9 @@
                 </div>
             </div>
         </section>
+
+    
+    
     
     </body>
-
 </html>
