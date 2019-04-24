@@ -26,7 +26,7 @@
                         {% for conf in pages %} 
                         <div class="conf_name" style="margin-top:10px;">
                             <div class="info" style="padding: 20px;">
-                                <a href="/conference/{{ conf[0] }}"><h5>{{ conf[0] }}</h5></a>
+                                <h5>{{ conf[0] }}</h5>
                                 {% for year in conf[1] %}
                                 <a href="/conference/{{ year[1] }}"><button type="button" class="btn btn-light" style="padding: 10px; margin-top:10px;">{{ year[0] }}</button></a>
                                 {% endfor %}
