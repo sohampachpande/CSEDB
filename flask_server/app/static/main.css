@@ -120,3 +120,15 @@
     background-color: #efefef;
     text-align: center;
   }
+
+.flex-container {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-container > div {
+  margin: 10px;
+  padding: 20px;
+  font-size: 30px;
+  background-color: #eeeeee;
+}
