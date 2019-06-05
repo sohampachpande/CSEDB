@@ -1,0 +1,53 @@
+<html>
+    
+    {% include 'head.html' %}
+
+
+    <body>
+
+    {% include 'navbar.html' %}
+    
+    <div class="container" style="align-self: center; padding: 40px">
+      <div id="formContent">
+
+        <!-- Login Form -->
+        <form action="/login" method="post" novalidate="novalidate">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row" style="padding:10px;">
+                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                <input type="text" class="form-control search-slt" name="username" placeholder="Username">
+                            </div>
+                            
+                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                <input type="text" class="form-control search-slt" name="password" placeholder="Password">
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                <button class="btn btn-secondary button" type="submit">Login</button>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        <!-- Remind Passowrd -->
+        <!-- <div id="formFooter">
+          <a class="underlineHover" href="#">Forgot Password?</a>
+        </div> -->
+
+      </div>
+    </div>
+
+    <br>
+    {% include 'footerbar.html' %}
+    </body>
+
+
+    <script>
+        VANTA.NET({
+            el: "#main",
+            color: 0xffffff,
+            backgroundColor: 0x648b9b
+        })
+    </script>
+</html>

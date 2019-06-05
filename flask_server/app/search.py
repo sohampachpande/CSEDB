@@ -5,8 +5,8 @@ from app import app
 from app import db
 
 
-def all_paper_pagination(all_paper,offset, per_page):
-    paper_subset = all_paper[offset: offset + per_page+1]
+def all_paper_pagination(all_paper, offset, per_page):
+    paper_subset = all_paper[offset: offset + per_page]
     cursor = db.cursor()
     return_list = []
     for a in paper_subset:
@@ -115,7 +115,6 @@ def search():
         print("hi author", q_author)
         cursor.execute('CALL autname_nlq("{}")'.format(q_author))
         all_authors = cursor.fetchall()
-        print(all_authors)
 
 
         # selectFOS = 'All'
@@ -173,7 +172,7 @@ def search():
 
         total = len(all_authors)
         # page, per_page, offset = get_page_args(page_parameter='page',per_page_parameter='per_page')
-        page = request.args.get(get_page_parameter(), type=int, default=0)
+        page = request.args.get(get_page_parameter(), type=int, default=1)
         
         pagination_data = all_author_pagination(all_authors, offset=page, per_page=20)
         pagination = Pagination(page=page, total=total, css_framework='bootstrap4',display_msg='''Showing <b>{start} - {end}</b> {record_name} from <b>{total}</b> entries''')
@@ -203,7 +202,7 @@ def search():
 
         total = len(all_paper)
         # page, per_page, offset = get_page_args(page_parameter='page',per_page_parameter='per_page')
-        page = request.args.get(get_page_parameter(), type=int, default=0)
+        page = request.args.get(get_page_parameter(), type=int, default=1)
         
         pagination_data = all_paper_pagination(all_paper, offset=page, per_page=20)
         pagination = Pagination(page=page, total=total, css_framework='bootstrap4',display_msg='''Showing <b>{start} - {end}</b> {record_name} from <b>{total}</b> entries''')

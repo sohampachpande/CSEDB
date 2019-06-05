@@ -60,7 +60,7 @@ def citation_graph(papers, references, cited_by):
             #'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
             #'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
             #'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
-            colorscale='YlGnBu',
+            colorscale='Viridis',
             reversescale=True,
             color=[],
             size=10,
