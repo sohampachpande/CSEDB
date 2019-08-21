@@ -1,0 +1,1280 @@
+ -- Pseudocode for procedures
+create procedure abc(EID int(1))
+begin
+select * from Physician where Physician.EmployeeID=EID;
+end//
+
+
+create procedure abc2(in EID int(1), out x varchar(50))
+begin
+select EmployeeID into x
+from Physician 
+where Physician.EmployeeID in(
+select Trained_In.Physician
+from Trained_In
+where Trained_In.Treatment=EID
+);
+end//
+
+
+
+
+create procedure abc1(in EID int(1), out cnt int)
+begin
+select count(*) into cnt from Physician where Physician.EmployeeID=EID;
+end//
+
+
+
+
+-------------------------------//Procedures//---------------------------
+
+
+-- Author 
+-- Per author page procedures - input generally AuthorID
+------------------------------------------------------------------------------------------
+ -- Author -> paper
+
+
+create procedure aut_paper(AID varchar(15))
+begin
+select PaperID, PaperTable.PaperName
+from PaperTable
+where PaperTable.PaperID in(
+select AuthorWritesPaper.PaperID
+from AuthorWritesPaper
+where AuthorWritesPaper.AuthorID=AID
+);
+end//
+
+
+--------------------------------------------------------------------------------
+-- Author -> Count of number of papers
+
+
+create procedure Number_of_papers_of_author(AID varchar(15))
+begin
+select count(PaperID)
+from PaperTable
+where PaperTable.PaperID in(
+select AuthorWritesPaper.PaperID
+from AuthorWritesPaper
+where AuthorWritesPaper.AuthorID=AID
+);
+end//
+
+
+--------------------------------------------------------------------------------
+
+
+-- Author -> coauthor
+
+
+create procedure coauthor(AID varchar(15))
+begin
+select AuthorID, AuthorTable.AuthorName
+from AuthorTable
+where AuthorTable.AuthorID<>AID and AuthorTable.AuthorID in(
+select AuthorWritesPaper.AuthorID
+from AuthorWritesPaper
+where AuthorWritesPaper.PaperID in(
+select AuthorWritesPaper.PaperID
+from AuthorWritesPaper
+where AuthorWritesPaper.AuthorID=AID
+));
+end//
+
+
+
+
+-------------------------------------------------------------------------------
+-- Author -> similar authors in terms of field of study 
+-- Can add the intersection of 2 fields to decide to make authors similar 
+create procedure similar_aut(AID varchar(15)) 
+begin
+select AuthorID, AuthorName
+from AuthorTable natural join AuthorInterestedInField
+where AuthorTable.AuthorID in(
+select AuthorID
+from AuthorTable natural join AuthorInterestedInField
+where FieldID in(
+select FieldID
+from AuthorTable natural join AuthorInterestedInField
+where AuthorID=AID
+));
+end//
+
+
+
+
+-------------------------------------------------------------------------------
+-- Author -> Conference
+
+
+create procedure aut_conf(AID varchar(15))
+begin
+select ConferenceID, ConferenceTable.ConferenceName, ConferenceYear
+from ConferenceTable
+where ConferenceTable.ConferenceID in(
+select PaperPublishedInConference.ConferenceID
+from PaperPublishedInConference
+where PaperPublishedInConference.PaperID in(
+select AuthorWritesPaper.PaperID 
+from AuthorWritesPaper
+where AuthorWritesPaper.AuthorID=AID
+));
+end//
+
+
+-------------------------------------------------------------------------------
+-- Author -> all papers that have cited any papers written by the author
+
+
+create procedure referredbypaper(AID varchar(15))
+begin
+select PaperID, PaperTable.PaperName
+from PaperTable
+where PaperTable.PaperID in(
+select Paper1CitesPaper2.Paper1ID
+from Paper1CitesPaper2
+where Paper1CitesPaper2.Paper2ID in(
+select AuthorWritesPaper.PaperID 
+from AuthorWritesPaper
+where AuthorWritesPaper.AuthorID=AID
+));
+end//
+
+
+
+
+-------------------------------------------------------------------------------
+-- Author -> count of  all papers that have cited any papers written by the author
+
+
+create procedure Number_of_citations_of_author(AID varchar(15))
+begin
+select count(PaperID)
+from PaperTable
+where PaperTable.PaperID in(
+select Paper1CitesPaper2.Paper1ID
+from Paper1CitesPaper2
+where Paper1CitesPaper2.Paper2ID in(
+select AuthorWritesPaper.PaperID 
+from AuthorWritesPaper
+where AuthorWritesPaper.AuthorID=AID
+));
+end//
+
+-------------------------------------------------------------------------------
+-- Author -> Field OF Study
+
+
+create procedure FOS(AID varchar(15))
+Begin 
+select FieldID, FieldOfStudy.FieldName
+from FieldOfStudy
+where FieldOfStudy.FieldID in(
+select AuthorInterestedInField.FieldID
+from AuthorInterestedInField
+where AuthorInterestedInField.AuthorID=AID
+);
+end//
+
+
+-------------------------------------------------------------------------------
+-- Author -> Affiliation
+
+
+create procedure author_affiliation(AID varchar(15))
+begin
+select AffiliationTable.AffiliationID, AffiliationTable.Affiliation, AffiliationTable.Place
+from AffiliationTable
+where AffiliationTable.AffiliationID in(
+select AffiliationOfAuthor.AffiliationID
+from AffiliationOfAuthor
+where AffiliationOfAuthor.AuthorID=AID
+);
+end//
+
+
+-------------------------------------------------------------------------------
+
+
+-- author  -> distribution of papers over the years 
+
+
+create procedure Author_PaperDistribution(in AID varchar(20))
+begin
+select ConferenceYear, count(distinct AuthorWritesPaper.PaperID) as Paper_count
+from AuthorWritesPaper,PaperPublishedInConference,ConferenceTable
+where ConferenceTable.ConferenceID=PaperPublishedInConference.ConferenceID
+and PaperPublishedInConference.PaperID = AuthorWritesPaper.PaperID
+and AuthorWritesPaper.AuthorID=AID
+group by ConferenceYear;
+end//
+
+
+---------------------------------------------------------------------------------
+
+
+-- author  -> distribution of citations to the author over the years 
+
+
+create procedure Author_CitationDistribution(in AID varchar(20))
+begin
+select ConferenceYear, count( distinct Paper1CitesPaper2.Paper1ID) as citation_count
+from AuthorWritesPaper,PaperPublishedInConference,ConferenceTable,Paper1CitesPaper2 
+where ConferenceTable.ConferenceID=PaperPublishedInConference.ConferenceID 
+and PaperPublishedInConference.PaperID=AuthorWritesPaper.PaperID 
+and AuthorWritesPaper.AuthorID= AID
+and AuthorWritesPaper.PaperID = Paper1CitesPaper2.Paper2ID 
+group by ConferenceYear;
+end//
+-------------------------------------------------------------------------------
+
+
+-- Author -> takes substring of authorname and returns matching author names
+
+
+create procedure autname_nlq(name varchar(500))
+begin
+select distinct  AuthorTable.AuthorID, AuthorTable.AuthorName
+from AuthorTable
+where AuthorTable.AuthorName like concat('%',name,'%');
+end//
+
+
+---------------------------------------------------------------------------------
+
+
+-- Author -> paper, field of Study
+
+
+create procedure author_paper_FOS(AID varchar(15))
+begin
+select PaperID, PaperTable.PaperName, FieldID,FieldName
+from PaperTable, FieldOfStudy
+where PaperTable.PaperID in(
+select AuthorWritesPaper.PaperID
+from AuthorWritesPaper
+where AuthorWritesPaper.AuthorID=AID
+) 
+and FieldOfStudy.FieldID in(
+select AuthorInterestedInField.FieldID
+from AuthorInterestedInField
+where AuthorInterestedInField.AuthorID=AID
+) 
+;
+end//
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- All authors page procedures - 
+-------------------------------------------------------------------------------
+-- all authors -> sorted according to names 
+
+
+create procedure sort_authors_alphabetically()
+begin
+        select * 
+        from AuthorTable 
+        order by AuthorName;
+end//
+
+
+---------------------------------------------------------------------------------
+-- all authors -> sorted according to citations 
+
+
+create procedure sort_authors_by_citations()
+begin
+select authorID_sorted_by_citations.AuthorID, AuthorName,citation_count  
+from authorID_sorted_by_citations left join AuthorTable 
+on authorID_sorted_by_citations.AuthorID=AuthorTable.AuthorID;
+end//
+
+
+---------------------------------------------------------------------------------
+-- all authors -> sorted according to paper count  
+
+
+create procedure sort_authors_by_paper_count()
+begin
+select authorID_sorted_by_Paper_Count.AuthorID,AuthorName,Paper_count 
+from authorID_sorted_by_Paper_Count natural join AuthorTable;
+end//
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+-- Papers
+-- Per paper page procedures - input generally PaperID
+-------------------------------------------------------------------------------------------
+-- Paper -> conference
+ 
+create procedure con_paper(PID varchar(15))
+begin
+select ConferenceID, ConferenceName, ConferenceYear
+from ConferenceTable
+where ConferenceTable.ConferenceID in(
+select PaperPublishedInConference.ConferenceID
+from PaperPublishedInConference
+where PaperPublishedInConference.PaperID=PID
+);
+end//
+---------------------------------------------------------------------------------------------------
+-- Paper -> Author
+
+
+create procedure author_paper(PID varchar(15))
+begin
+select AuthorID, AuthorName
+from AuthorTable
+where AuthorTable.AuthorID in(
+select AuthorWritesPaper.AuthorID
+from AuthorWritesPaper
+where AuthorWritesPaper.PaperID=PID
+);
+end//
+
+
+--------------------------------------------------------------------------------------------------------------
+-- Paper -> Title
+
+
+create procedure title(in PID varchar(15))
+begin
+select PaperID, PaperName 
+from PaperTable 
+where PaperTable.PaperID=PID;
+end//
+
+
+---------------------------------------------------------------------------------------------------------------
+-- Paper ->  papers that are in the references part of this paper
+
+
+create procedure references_of_this_paper(in PID varchar(15))
+begin
+select PaperID, PaperName
+from PaperTable
+where PaperTable.PaperID in(
+select Paper2ID
+from Paper1CitesPaper2
+where Paper1CitesPaper2.Paper1ID=PID
+);
+end//
+
+
+--------------------------------------------------------------------------------
+-- Paper -> the papers that cite this paper
+
+
+create procedure this_paper_cited_by(in PID varchar(15))
+begin
+select PaperID, PaperName
+from PaperTable
+where PaperTable.PaperID in(
+select Paper1ID
+from Paper1CitesPaper2
+where Paper1CitesPaper2.Paper2ID=PID
+);
+end//
+
+
+
+
+--------------------------------------------------------------------------------
+-- Paper -> Field of Study 
+
+
+create procedure paper_fos(PID varchar(15))
+begin
+select FieldID, FieldOfStudy.FieldName
+from FieldOfStudy
+where FieldOfStudy.FieldID in(
+select AuthorInterestedInField.FieldID
+from AuthorInterestedInField
+where AuthorInterestedInField.AuthorID in(
+select AuthorWritesPaper.AuthorID
+from AuthorWritesPaper
+where AuthorWritesPaper.PaperID=PID
+));
+end//
+
+
+-------------------------------------------------------------------------------
+-- Paper -> Affiliation
+
+
+create procedure paper_affiliation(PID varchar(15))
+begin
+select AffiliationTable.AffiliationID, AffiliationTable.Affiliation, AffiliationTable.Place
+from AffiliationTable
+where AffiliationTable.AffiliationID in(
+select AffiliationOfAuthor.AffiliationID
+from AffiliationOfAuthor
+where AffiliationOfAuthor.AuthorID in(
+select AuthorWritesPaper.AuthorID
+from AuthorWritesPaper
+where AuthorWritesPaper.PaperID=PID
+));
+end//
+
+
+-------------------------------------------------------------------------------
+-- Paper -> Keywords
+
+
+create procedure paper_keywords(PID varchar(15))
+begin
+select KeywordTable.Keyword
+from KeywordTable
+where KeywordTable.KeywordID in(
+select KeywordsInPaper.KeywordID
+from KeywordsInPaper
+where KeywordsInPaper.PaperID=PID
+);
+end//
+
+
+-------------------------------------------------------------------------------
+ -- Paper -> Distribution of citations over time 
+
+
+-- Procedure 1 
+create procedure paper_year_of_publish(in PID varchar(15))
+begin
+        select ConferenceYear 
+        from ConferenceTable
+        where ConferenceTable.ConferenceID in(
+        select PaperPublishedInConference.ConferenceID
+        from PaperPublishedInConference
+        where PaperPublishedInConference.PaperID=PID
+        ) ;
+end//
+
+
+-- Procedure 2
+create procedure yearwise_citation_count(in current_year integer, in PID varchar(15))
+begin
+
+
+        select count(Paper1ID)
+        from Paper1CitesPaper2
+where Paper1ID in (
+        select PaperID 
+        from PaperPublishedInConference, ConferenceTable
+        where PaperPublishedInConference.ConferenceID=ConferenceTable.ConferenceID and ConferenceYear<=current_year )  and Paper2ID = PID;
+end//
+ -- Paper -> Total of citations over time 
+
+
+create procedure total_citation_count_paper( in PID varchar(15))
+begin
+
+
+        select count(Paper1ID)
+        from Paper1CitesPaper2
+        where Paper1ID in (
+        select PaperID 
+        from PaperPublishedInConference, ConferenceTable
+        Where PaperPublishedInConference.ConferenceID=ConferenceTable.ConferenceID)  and Paper2ID = PID;
+end//
+---------------------------------------------------------------------------------
+ -- papers -> citations of a given paper per year 
+
+
+create procedure paper_citations_notCumul_yearwise(in PID varchar(20))
+begin
+select ConferenceYear,count(Paper1ID) 
+from Paper1CitesPaper2, PaperID_Year 
+where Paper2ID=PID and Paper1ID=PaperID 
+group by ConferenceYear ;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+ -- Paper -> Summary 
+
+
+create procedure summary_of_paper(in PID varchar(20))
+begin
+select PaperID, Summary 
+from PaperSummary 
+where PaperID=PID;
+end//
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- paper -> takes substring of papername and returns matching paper names
+
+
+create procedure papername_nlq(name varchar(500))
+begin
+select distinct PaperTable.PaperID, PaperTable.PaperName
+from PaperTable
+where PaperTable.PaperName like concat('%',name,'%');
+end//
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+-- All paper page procedures - 
+
+
+---------------------------------------------------------------------------------
+
+
+-- all Papers  -> sort by citation counts 
+
+
+create procedure sort_papers_by_citations()
+begin
+select  PaperTable.PaperID,PaperTable.PaperName, paperID_sorted_by_citations.citation_count
+from PaperTable natural join paperID_sorted_by_citations
+where PaperTable.PaperID= paperID_sorted_by_citations.Paper2ID;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+-- all Papers  -> sorting according to year
+
+
+create procedure sort_papers_by_year()
+begin
+select distinct PaperTable.PaperID, PaperTable.PaperName,ConferenceYear
+from PaperTable,PaperPublishedInConference  ,ConferenceTable
+where PaperTable.PaperID= PaperPublishedInConference.PaperID
+and PaperPublishedInConference.ConferenceID= ConferenceTable.ConferenceID
+order by ConferenceYear desc ;
+end//
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- all papers -> sorted according to names 
+
+
+create procedure sort_papers_alphabetically()
+begin
+        select * 
+        from PaperTable 
+        order by PaperName;
+end//
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+-- Conferences
+-- Per conference page procedures - input generally ConferenceID or ConferenceName
+
+
+---------------------------------------------------------------------------------
+-- conference -> years in which the conference was held
+
+
+create procedure get_conference_years(in Name_of_Conference varchar(500))
+begin 
+        select ConferenceID,ConferenceName,ConferenceYear
+        from ConferenceTable
+        where ConferenceName=Name_of_Conference;
+end//
+---------------------------------------------------------------------------------
+ 
+
+
+-- conference -> Field Of Study  by giving ConferenceID
+
+
+create procedure conference_FieldOfStudy(in CID varchar(20))
+begin
+select FieldOfStudy.FieldID, FieldName
+from FieldOfStudy,ScopeOfConference
+where ScopeOfConference.ConferenceID = CID and ScopeOfConference.FieldID = FieldOfStudy.FieldID;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- conference -> Paper count by giving ConferenceID
+
+
+create procedure conference_PaperCount(in CID varchar(20))
+begin
+select count(PaperPublishedInConference.PaperID)
+from PaperPublishedInConference
+where ConferenceID=CID
+group by ConferenceID;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- conference -> Author count by giving ConferenceID
+
+
+create procedure conference_AuthorCount(in CID varchar(20))
+begin
+select count(AuthorWritesPaper.AuthorID)
+from PaperPublishedInConference,AuthorWritesPaper
+where ConferenceID=CID and PaperPublishedInConference.PaperID=AuthorWritesPaper.PaperID;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- conference -> Paper Names  by giving ConferenceID
+
+
+create procedure conference_PaperNames(in CID varchar(20))
+begin
+select PaperTable.PaperID, PaperTable.PaperName
+from PaperPublishedInConference,PaperTable
+where ConferenceID=CID and PaperPublishedInConference.PaperID=PaperTable.PaperID;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- conference -> Author Names  by giving ConferenceID
+
+
+create procedure conference_AuthorNames(in CID varchar(20))
+begin
+select AuthorTable.AuthorID, AuthorTable.AuthorName
+from PaperPublishedInConference,AuthorWritesPaper,AuthorTable
+where ConferenceID=CID and PaperPublishedInConference.PaperID=AuthorWritesPaper.PaperID and AuthorWritesPaper.AuthorID= AuthorTable.AuthorID;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- conferences -> Paper count by giving ConferenceName 
+
+
+create procedure conferenceName_PaperCount(in CName varchar(500))
+begin
+select count(PaperPublishedInConference.PaperID)
+from PaperPublishedInConference,ConferenceTable
+where ConferenceTable.ConferenceID=PaperPublishedInConference.ConferenceID and ConferenceName=CName
+group by ConferenceName;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- conferences -> Author count by giving ConferenceName 
+
+
+create procedure conferenceName_AuthorCount(in CName varchar(500))
+begin
+select count(AuthorWritesPaper.AuthorID)
+from PaperPublishedInConference,AuthorWritesPaper,ConferenceTable
+where  PaperPublishedInConference.PaperID=AuthorWritesPaper.PaperID and 
+ConferenceTable.ConferenceID=PaperPublishedInConference.ConferenceID and 
+ConferenceName=CName;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+-- conference -> Field Of Study by giving ConferenceName 
+
+
+create procedure conferenceName_FieldOfStudy(in CName varchar(500))
+begin
+select distinct FieldOfStudy.FieldID, FieldName
+from FieldOfStudy,ScopeOfConference,ConferenceTable
+where ScopeOfConference.ConferenceID = ConferenceTable.ConferenceID 
+and ConferenceTable.ConferenceName=CName 
+and ScopeOfConference.FieldID = FieldOfStudy.FieldID;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- conference  -> in citation  by giving ConferenceName 
+
+
+create procedure ConferenceName_INcitations(in CName varchar(500))
+begin
+select sum(citation_count)
+from paperID_sorted_by_citations, PaperPublishedInConference,ConferenceTable
+where paperID_sorted_by_citations.Paper2ID = PaperPublishedInConference.PaperID 
+and  PaperPublishedInConference.ConferenceID = ConferenceTable.ConferenceID 
+and ConferenceName=CName;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- conference  -> out citation  by giving ConferenceName 
+
+
+create procedure ConferenceName_OUTcitations(in CName varchar(500))
+begin
+select sum(citation_count)
+from paperID_sorted_by_references, PaperPublishedInConference,ConferenceTable
+where paperID_sorted_by_references.Paper1ID = PaperPublishedInConference.PaperID 
+and  PaperPublishedInConference.ConferenceID = ConferenceTable.ConferenceID 
+and ConferenceName=CName;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- conference  -> distribution of papers over the years 
+
+
+create procedure ConferenceName_PaperDistribution(in CName varchar(500))
+begin
+select ConferenceYear, count(PaperID)
+from PaperPublishedInConference,ConferenceTable
+where ConferenceTable.ConferenceID=PaperPublishedInConference.ConferenceID
+and ConferenceName=CName
+group by ConferenceYear;
+
+
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- conference  -> distribution of citations to the conference over the years 
+
+
+create procedure ConferenceName_CitationDistribution(in CName varchar(500))
+begin
+select ConferenceYear, sum(citation_count)
+from PaperPublishedInConference,ConferenceTable,paperID_sorted_by_citations
+where ConferenceTable.ConferenceID=PaperPublishedInConference.ConferenceID
+and paperID_sorted_by_citations.Paper2ID= PaperPublishedInConference.PaperID
+and ConferenceName=CName
+group by ConferenceYear;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- Conference -> keywords for the input conferenceID
+
+
+create procedure conference_keywords(CID varchar(15))
+begin
+select KeywordTable.Keyword
+from KeywordTable, KeywordsInPaper, PaperPublishedInConference
+where KeywordsInPaper.PaperID=PaperPublishedInConference.PaperID
+and PaperPublishedInConference.ConferenceID=CID
+and KeywordsInPaper.KeywordID=KeywordTable.KeywordID;
+end//
+---------------------------------------------------------------------------------
+
+
+
+
+
+-- All  conference page procedures - input generally ConferenceName
+
+
+
+
+---------------------------------------------------------------------------------------
+-- conference -> unique conference names 
+
+
+create procedure unique_conference_names()
+begin 
+        select distinct ConferenceName
+        from ConferenceTable;
+end//
+---------------------------------------------------------------------------------------
+
+
+-- conference -> takes substring of conferencename and returns matching conference names
+
+
+create procedure conferencename_nlq(name varchar(500))
+begin
+select distinct ConferenceTable.ConferenceID,ConferenceTable.ConferenceName,ConferenceTable.ConferenceYear
+from ConferenceTable
+where ConferenceTable.ConferenceName like concat('%',name,'%');
+end//
+
+
+---------------------------------------------------------------------------------------
+
+
+---------------------------------------------------------------------------------------------------------------------
+-- Field Of Study 
+-- Per field of study page procedures - input generally FieldID
+
+
+-------------------------------------------------------------------------------
+-- FOS -> Authors
+
+
+create procedure FOS_aut(FID varchar(15))
+begin
+select AuthorTable.AuthorID, AuthorTable.AuthorName
+from AuthorTable
+where AuthorTable.AuthorID in(
+select AuthorInterestedInField.AuthorID
+from AuthorInterestedInField
+where AuthorInterestedInField.FieldID=FID
+);
+end//
+
+
+
+
+-------------------------------------------------------------------------------
+-- FOS -> Papers
+
+
+create procedure FOS_paper(FID varchar(15))
+begin
+select PaperTable.PaperID, PaperTable.PaperName
+from PaperTable
+where PaperTable.PaperID in(
+select PaperBelongsToScope.PaperID
+from PaperBelongsToScope
+where PaperBelongsToScope.FieldID=FID
+);
+end//
+
+
+
+
+-------------------------------------------------------------------------------
+-- FOS -> conferences
+
+
+create procedure fos_conf(FID varchar(15))
+begin
+select ConferenceTable.ConferenceID, ConferenceTable.ConferenceName, ConferenceTable.ConferenceYear
+from ConferenceTable
+where ConferenceTable.ConferenceID in(
+select ScopeOfConference.ConferenceID
+from ScopeOfConference
+where ScopeOfConference.FieldID=FID
+);
+end//
+
+
+-------------------------------------------------------------------------------
+-- FOS -> Returns AuthorID, authorName sorted according to names 
+
+
+create procedure FOS_Author_sorted_alphabetically(FID varchar(15))
+begin
+select AuthorID, AuthorName
+from AuthorTable
+where AuthorID in(
+select AuthorInterestedInField.AuthorID
+from AuthorInterestedInField
+where AuthorInterestedInField.FieldID=FID
+)
+order by AuthorName;
+end//
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+-- FOS -> Returns AuthorID, authorName sorted according to citations
+
+
+create procedure FOS_Author_sorted_by_citations(FID varchar(15))
+begin
+select authorID_sorted_by_citations.AuthorID, AuthorName,citation_count
+from authorID_sorted_by_citations natural join AuthorTable
+where AuthorTable.AuthorID in(
+select AuthorInterestedInField.AuthorID
+from AuthorInterestedInField
+where AuthorInterestedInField.FieldID=FID
+)
+order by citation_count desc;
+end//
+
+
+---------------------------------------------------------------------------------
+
+
+
+
+-- FOS -> Returns AuthorID, authorName sorted according to paper count 
+
+
+create procedure FOS_Author_sorted_by_paper_count(FID varchar(15))
+begin
+select  authorID_sorted_by_Paper_Count.AuthorID,AuthorName,Paper_count 
+from authorID_sorted_by_Paper_Count natural join AuthorTable
+where AuthorTable.AuthorID in(
+select AuthorInterestedInField.AuthorID
+from AuthorInterestedInField
+where AuthorInterestedInField.FieldID=FID
+)
+order by Paper_count desc;
+end//
+
+
+---------------------------------------------------------------------------------
+-- FOS -> Returns PaperID, PaperName sorted according to citations 
+
+
+create procedure FOS_Paper_sorted_by_citations(FID varchar(15))
+begin
+select PaperTable.PaperID,PaperTable.PaperName,paperID_sorted_by_citations.citation_count
+from PaperTable natural join paperID_sorted_by_citations, PaperBelongsToScope
+where  PaperTable.PaperID= paperID_sorted_by_citations.Paper2ID  
+and PaperTable.PaperID=PaperBelongsToScope.PaperID 
+and PaperBelongsToScope.FieldID=FID 
+order by citation_count desc;
+end//
+
+
+---------------------------------------------------------------------------------
+
+
+-- All field of study page procedures - 
+-- Modification Page 
+
+
+
+
+-- Modification page -> check if paper exists  
+
+
+create procedure check_paper_exists_and_add(in PName varchar(500))
+begin
+if exists(select PaperTable.PaperID from PaperTable where PaperTable.PaperName = PName) then 
+begin 
+select PaperTable.PaperID
+from PaperTable 
+where PaperTable.PaperName = PName;
+end;
+else
+begin
+
+
+
+
+declare totalpapers int ; 
+declare newPaperID varchar(20);
+set totalpapers = (
+select count(*) 
+from PaperTable );
+set newPaperID= concat('Z01-',totalpapers);
+
+
+
+
+INSERT INTO PaperTable values(newPaperID, PName);
+select PaperTable.PaperID
+from PaperTable 
+where PaperTable.PaperName = PName;
+
+
+
+
+end;
+end if;
+end//
+
+
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- Modification page -> add fieldofStudy 
+
+
+create procedure addFieldOfStudy(in PID varchar(20), in FName varchar(500)) begin declare fieldIDv varchar(20);  select FieldID into fieldIDv from FieldOfStudy where FieldName = FName;insert into PaperBelongsToScope values(PID,feildIDv); end//
+
+
+create procedure addFieldOfStudy(in PID varchar(20), in FName varchar(500)) begin declare fieldIDv varchar(20);  select FieldID into fieldIDv from FieldOfStudy where FieldName = FName;insert into PaperBelongsToScope values(PID,fieldIDv); end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- Modification page -> add conference name, conference year 
+
+
+create procedure addConference(in PID varchar(20), in CName varchar(500), in CYear integer)
+begin
+if exists(select ConferenceID
+from ConferenceTable 
+where ConferenceTable.ConferenceName = CName
+and ConferenceTable.ConferenceYear = CYear) then 
+begin 
+declare conferenceIDv varchar(20) ; 
+select ConferenceTable.ConferenceID into conferenceIDv
+from ConferenceTable
+where ConferenceTable.ConferenceName = CName
+and ConferenceTable.ConferenceYear = CYear;
+insert into PaperPublishedInConference values(PID,conferenceIDv);
+end;
+else
+begin
+declare totalconferences int ; 
+declare newconferenceID varchar(20);
+set totalconferences = (
+select count(*) 
+from ConferenceTable );
+set newconferenceID= concat('D-',totalconferences);
+INSERT INTO ConferenceTable values(newconferenceID,CName,CYear);
+INSERT INTO PaperPublishedInConference values(PID,newconferenceID);
+
+
+
+
+
+
+end;
+end if;
+end//
+
+
+---------------------------------------------------------------------------------
+-- Modification page -> add authorname, affiliationname, place
+
+
+create procedure addAuthor_Affiliation(in PID varchar(20), in AName varchar(500), in AffName varchar(500),in AffPlace varchar(500))
+begin
+if exists(select AuthorID 
+from AuthorTable 
+where AuthorName = AName) then 
+begin 
+declare authorIDv varchar(20) ; 
+select AuthorID into authorIDv
+from AuthorTable 
+where AuthorName = AName;
+insert into AuthorWritesPaper values(authorIDv,PID);
+
+
+if exists(select AffiliationID 
+from AffiliationTable
+where Affiliation = AffName
+and Place = AffPlace) then 
+begin
+select AffiliationID 
+from AffiliationTable
+where Affiliation = AffName
+and Place = AffPlace;
+end;
+else
+begin
+
+
+declare totalaffiliations int ; 
+declare newaffiliationID varchar(20);
+set totalaffiliations = (
+select count(*) 
+from AffiliationTable );
+set newaffiliationID= concat('BF-',totalaffiliations);
+insert into AffiliationTable values(newaffiliationID,AffName,AffPlace);
+insert into AffiliationOfAuthor values(authorIDv,newaffiliationID);
+end;
+end if;
+
+
+
+
+end;
+else
+begin
+declare totalauthors int ; 
+declare newauthorID varchar(20);
+set totalauthors = (
+select count(*) 
+from AuthorTable );
+set newauthorID= concat('B-',totalauthors);
+INSERT INTO AuthorTable values(newauthorID,AName);
+insert into AuthorWritesPaper values(newauthorID,PID);
+
+
+if exists(select AffiliationID 
+from AffiliationTable
+where Affiliation = AffName
+and Place = AffPlace) then 
+begin
+declare affiliationIDv varchar(20) ; 
+select AffiliationID into affiliationIDv
+from AffiliationTable
+where Affiliation = AffName
+and Place = AffPlace;
+insert into AffiliationOfAuthor values(newauthorID,affiliationIDv);
+end;
+else
+begin
+declare totalaffiliations int ; 
+declare newaffiliationID varchar(20);
+set totalaffiliations = (
+select count(*) 
+from AffiliationTable );
+set newaffiliationID= concat('BF-',totalaffiliations);
+insert into AffiliationTable values(newaffiliationID,AffName,AffPlace);
+insert into AffiliationOfAuthor values(newauthorID,newaffiliationID);
+
+
+end;
+end if;
+
+
+
+
+end;
+end if;
+end//
+
+
+
+
+---------------------------------------------------------------------------------
+
+
+-- Modification page -> add references 
+
+
+create procedure addReferences(in PID varchar(20), in P2Name varchar(500))
+begin
+if exists(select PaperID
+from PaperTable 
+where PaperName = P2Name) then 
+begin 
+declare paper2IDv varchar(20) ; 
+select PaperID into paper2IDv
+from PaperTable 
+where PaperName = P2Name;
+insert into Paper1CitesPaper2 values(PID,paper2IDv);
+end;
+end if;
+end//
+---------------------------------------------------------------------------------
+
+
+
+
+-- Modification page -> add keywords
+
+
+create procedure addKeywords(in PID varchar(20), in KName varchar(500))
+begin
+if exists(select KeywordID
+from KeywordTable 
+where Keyword = KName) then 
+begin 
+declare keywordIDv varchar(20) ; 
+select KeywordID into keywordIDv
+from KeywordTable 
+where Keyword = KName;
+insert into KeywordsInPaper values(PID,keywordIDv);
+end;
+else
+begin
+declare totalkeywords int ; 
+declare newkeywordID varchar(20);
+set totalkeywords = (
+select count(*) 
+from KeywordTable );
+set newkeywordID= concat('L-',totalkeywords);
+
+
+insert into KeywordTable values(newkeywordID,KName);
+insert into KeywordsInPaper values(PID,newkeywordID);
+end;
+
+
+end if;
+end//
+---------------------------------------------------------------------------------
+
+
+-- Modification page -> add summary
+
+
+create procedure addSummary(in PID varchar(20), in SName varchar(6000))
+begin
+insert into PaperSummary values(PID,SName);
+end//
+---------------------------------------------------------------------------------

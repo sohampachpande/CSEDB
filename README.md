@@ -1,2 +1,2 @@
 # CSEDB
-CSE Research Database Projject
+CSE Research Database Project
